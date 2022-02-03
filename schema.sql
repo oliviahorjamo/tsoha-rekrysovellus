@@ -7,7 +7,7 @@ CREATE TABLE users (
 
 CREATE TABLE job_experience (
 	id SERIAL PRIMARY KEY,
-	employee_id REFERENCES users,
+	employee_id INTEGER REFERENCES users,
 	employer TEXT,
 	role TEXT,
 	description TEXT,
@@ -17,7 +17,7 @@ CREATE TABLE job_experience (
 
 CREATE TABLE education (
 	id SERIAL PRIMARY KEY,
-	employee_id REFERNCES users,
+	employee_id INTEGER REFERNCES users,
 	school TEXT,
 	level TEXT,
 	description TEXT,
@@ -27,15 +27,15 @@ CREATE TABLE education (
 
 CREATE TABLE jobs (
 	id SERIAL PRIMARY KEY,
-	employer_id REFERENCES users,
-	employee_id REFERENCES users,
+	employer_id INTEGER REFERENCES users,
+	employee_id INTEGER REFERENCES users,
 	role TEXT,
 	description TEXT,
 	beginning DATE,
 	end DATE,
 	status INTEGER,
 	visible INTEGER,
-	form REFERENCES application_forms
+	form INTEGER REFERENCES application_forms
 	visible_in_profile INTEGER
 );
 
@@ -48,13 +48,13 @@ CREATE TABLE application_forms (
 );
 
 CREATE TABLE applications (
-	form_id REFERENCES application_forms,
-	job_id REFERENCES jobs,
+	form_id INTEGER REFERENCES application_forms,
+	job_id INTEGER REFERENCES jobs,
 	answer_1 TEXT,
 	answer_2 TEXT,
 	answer_3 TEXT,
 	amswer_4 TEXT,
 	answer_5 TEXT,
 	sent_at TIMESTAMP,
-	employee_id REFERENCES employees
+	employee_id INTEGER REFERENCES employees
 )
