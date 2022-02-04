@@ -16,3 +16,7 @@ Lisäksi käyttäjäkohtaisesti on tarjolla seuraavat ominaisuudet:
 - Työntekijä voi lisätä profiiliinsa työkokemus- ja koulutus -osiot.
 - Työntekijä voi selata avoinna olevia työpaikkoja. Hän voi hakea työpaikkaa täyttämällä hakulomakkeen.
 - Työntekijä voi selata hakemiaan työpaikkoja työnhaun statuksen mukaan. Statukset ovat: auki olevat haut, päättyneet haut (saadut työpaikat ja ei saadut työpaikat) ja poistetut ilmoitukset. Jos haku on vielä auki, työntekijä voi muokata hakulomakettaan.
+
+Sovelluksen tila 4.2.2022:
+
+- Sovellukseen voi rekisteröityä ja kirjautua sisään. Sovelluksessa on etusivu ja profiilisivua on aloitettu. Sovellusta ei voi vielä testata Herokussa.
