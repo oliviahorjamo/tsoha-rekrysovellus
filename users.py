@@ -33,22 +33,35 @@ def logout():
     del session["user_role"]
 
 def register(name, password, role):
+    print("db", db)
+    print("minua kutsuttiin")
     hash_value = generate_password_hash(password)
-    if role == 1:
+    print("role", role)
+    print(type(role))
+    print(role == "1")
+    print(role == "0")
+    if role == "1":
+        print("roolini on 1")
         try:
             sql = "INSERT INTO employers (name, password) VALUES (:name, :password)"
+            print("olen tehnyt sql lauseen, rooli = 1")
             db.session.execute(sql, {"name":name, "password":hash_value})
+            print("olen suorittanut sql komennon, rooli = 1")
             db.session.commit()
+            print("commit onnistui")
         except:
             return False
-    else:
+    elif role == "0":
         try:
+            print("olen tryssa")
             sql = "INSERT INTO employees (name, password) VALUES (:name, :password)"
+            print("olen tehnyt sql lauseen")
             db.session.execute(sql, {"name":name, "password":hash_value})
+            print("olen suorittanut executen")
             db.session.commit()
         except:
             return False
-    return login(name, password)
+    #return login(name, password)
 
 def user_id():
     return session.get("user_id", 0)

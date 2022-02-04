@@ -1,14 +1,12 @@
 {% extends "layout.html" %}
 {%block content %}
-{% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a>
-{% else %}
-<form action="/login" method="POST">
-<p>Tunnus:<br>
-<input type="text" name="username"></p>
-<p>Salasana:<br>
-<input type="password" name="password"></p>
-<input type="submit" value="Kirjaudu">
-</form>
-{% endif %}
+
+<h2>Kirjaudu sisään</h2>
+
+<p> Tämä sovellus vaatii sisään kirjautumisen tai rekisteröitymisen. </p>
+<br>
+Jos sinulle on jo tunnus, kirjaudu sisään <a href="/login">tästä</a>
+<br>
+Jos sinulla ei ole vielä tunnusta, voit rekisteröityä tästä <a href="/register">tästä</a>
+<br>
+{% endblock %}
