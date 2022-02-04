@@ -63,10 +63,13 @@ def register(name, password, role):
             db.session.commit()
         except:
             return False
-    #return login(name, password)
+    return login(name, password)
 
 def user_id():
     return session.get("user_id", 0)
+
+def user_role():
+    return session.get("user_role", 0)
 
 def require_role(role):
     if role > session.get("user_role", 0):
