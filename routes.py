@@ -31,3 +31,25 @@ def register():
 
         return redirect("/mainpage")
 
+@app.route("/login", methods =["GET","POST"])
+def login():
+
+    if request.method == "GET":
+        return render_template("login.html")
+
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if not users.login(username, password):
+            #TODO virheiden käsittely
+            print("Sisään kirjautuminen epäonnistui")
+
+    return redirect("/mainpage")
+
+@app.route("/mainpage", methods = ["GET", "POST"])
+def mainpage():
+
+    if request.method == "GET":
+        return render_template("mainpage.html")
+

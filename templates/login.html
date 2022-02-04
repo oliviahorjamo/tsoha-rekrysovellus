@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Kirjaudu sisään</h2>
+
+<form action="/login" method ="POST">
+    <p>Käyttäjätunnus: </p><br>
+    <input type="text" name="username">
+    <p>Salasana:</p>
+    <input type="password" name="password">
+    <input type="submit" value="Kirjaudu">
+</form>
+
+<a href="/">Palaa etusivulle</a>
+
+{% endblock %}
