@@ -12,6 +12,7 @@ def login(name, password):
     user = result.fetchone()
     if not user:
         sql = "SELECT password, id FROM employers WHERE name=:name"
+        result = db.session.execute(sql, {"name":name})
         user = result.fetchone()
         if not user:
             return False
@@ -24,6 +25,7 @@ def login(name, password):
         session["user_role"] = 0
 
     session["user_id"] = user[1]
+    session["user_name"] = name
     session["csrf_token"] = os.urandom(16).hex()
     return True
 
