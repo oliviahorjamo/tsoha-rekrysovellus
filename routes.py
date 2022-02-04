@@ -47,9 +47,13 @@ def login():
 
     return redirect("/mainpage")
 
+
+@app.route("/logout")
+def logout():
+    users.logout()
+    return redirect("/")
+
 @app.route("/mainpage", methods = ["GET", "POST"])
 def mainpage():
-
-    if request.method == "GET":
-        return render_template("mainpage.html")
+    return render_template("mainpage.html")
 
