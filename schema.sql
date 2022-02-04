@@ -1,13 +1,15 @@
 CREATE TABLE employers (
 	id SERIAL PRIMARY KEY,
 	name TEXT,
-	password TEXT
+	password TEXT,
+	profile_text TEXT
 );
 
 CREATE TABLE employees (
 	id SERIAL PRIMARY KEY,
 	name TEXT,
-	password TEXT
+	password TEXT,
+	profile_text TEXT
 );
 
 CREATE TABLE job_experience (

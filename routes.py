@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template, request, redirect
 import users
+import profiles
 
 @app.route("/")
 def index():
@@ -57,3 +58,10 @@ def logout():
 def mainpage():
     return render_template("mainpage.html")
 
+@app.route("/profile", methods = ["GET", "POST"])
+def profile():
+
+    profile_text = profiles.get_profile_text(users.user_id(), users.user_role())
+
+    if request.method == "GET":
+        return render_template("profile.html")

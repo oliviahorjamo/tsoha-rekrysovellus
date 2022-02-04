@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2> Oma profiilisi</h2>
+
+<p>Nimi: <b> {{session.user_name }} </b></p>
+
+{% if session.profile_text %}
+
+
+<a href="/mainpage">Palaa etusivulle</a>
+
+{% endblock %}
