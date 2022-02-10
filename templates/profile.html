@@ -11,42 +11,44 @@
     tarvitaanko get_name functio users.py -tiedostoon
         ainakin täytyy rekisteröityessä asettaa session.user_real_name -->
 
-{% if session.profile_text %}
-<p>Tässä on profiiliteksti</p>
-
+{% if profile_text %}
+<p>Profiiliteksti:<br>
+{{profile_text}}</p>
+<!--Voisko tälle antaa parametrina profiilitekstin joka on annettu tälle html:lle parametrina?
+Toinen vaihtoehto olis tehdä erikseen profiilitekstin lisäys ja profiilitekstin muokkaaminen -sivut
+Tyhmää hakea routes.py tiedostossa kummankin sivun kohdalla erikseen profiiliteksti kun se on kerran jo haettu tälle html:lle-->
 <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
 
-{% endif %}
-
-{% if not session.profile_text %}
+{% else %}
 <p>Lisää profiiliteksti tästä: <a href="/edit_profile">Lisää profiiliteksti </a></p>
+
 {% endif %}
 
-{% if session.job_experience %}
+{% if job_experience %}
 <p>Tässä on työkokemukset listattuna tyyliin
     Työkokemus 1
     Muokkaa työkokemusta 1 <a href="/edit_job_experience">Muokkaa työkokemusta</a>
     Työkokemus 2
     Muokkaa työkokemusta 2 <a href="/edit_job_experience">Muokkaa työkokemusta</a>
 </p>
-{% endif %}
 
-{% if not session.job_experience %}
+{% else %}
 <p>Lisää työkokemus tästä: <a href="/edit_job_experience">Lisää työkokemus </a></p>
+
 {% endif %}
 
-{% if session.education %}
+
+{% if education %}
 <p>Tässä on koulutus listattuna tyyliin
     Koulutus 1
     Muokkaa koulutusta 1 <a href="/edit_education">Muokkaa koulutusta</a>
     Koulutus 2
     Muokkaa koulutusta 2 <a href="/edit_education">Muokkaa koulutusta</a>
 </p>
-{% endif %}
-
-{% if not session.education %}
+{% else %}
 <p>Lisää koulutus tästä: <a href="/edit_education">Lisää koulutus </a></p>
 {% endif %}
+
 
 <a href="/mainpage">Palaa etusivulle</a>
 

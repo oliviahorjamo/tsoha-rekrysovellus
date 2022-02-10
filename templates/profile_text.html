@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Lisää profiiliteksti</h2>
+<p>Kirjoita profiiliteksti (max. 50 sanaa)</p>
+
+<p>Vanha profiilitekstisi:<br>
+    {{profile_text}}
+</p>
+
+<form action="/edit_profile" method ="POST">
+    <p>Profiiliteksti: </p><br>
+    <input type="text" name="profile_text">
+    <input type="submit" name ="Lisää profiiliteksti">
+</form>
+
+{% endblock %}

@@ -61,19 +61,53 @@ def mainpage():
 @app.route("/profile", methods = ["GET", "POST"])
 def profile():
 
+    profile_text = profiles.get_profile_text(users.user_id())
+    print(profile_text)
+
+    job_experience = profiles.get_jobs(users.user_id())
+    print(job_experience)
+
+    education = profiles.get_education(users.user_id())
+    print(education)
+
+    #nyt on haettu profiiliteksti, työkokemus ja koulutus
+        #jos ei ole näitä, näytetään vaihtoehdot lisää
+        #jos on, näytetään nämä profiilissa
+        #pitäisi siis antaa parametrina profile.html tiedostolle
+
+    #kun tämä on tehty, siirry profiilitekstin lisäämiseen
+    #siinä seuraavat vaiheet
+    #luo html pohja uuden profiilitekstin lisäämiselle
+    #tallenna kirjoitus profile_texts -tauluun
+    #jos käyttäjällä on jo teksti, hae valmis teksti
+    #muokkaa tekstiä
+
     #luo eka pohja profiilille html:lla
 
     if request.method == "GET":
-        return render_template("profile.html")
+        return render_template("profile.html", profile_text=profile_text, job_experience=job_experience, education=education)
 
-    profile_text = profiles.get_profile_text(users.user_id(), users.user_role())
 
 @app.route("/edit_profile", methods = ["GET", "POST"])
 def edit_profile():
     """creates a route for editing ones profile
     find the editing html and return it
     when a new profile text is created, call functions add_profile_text and possibly delete_profile_text in profiles.py"""
-    pass
+
+    #TODO profiilitekstin oikeellisuuden käsittely
+
+    profile_text = profiles.get_profile_text(users.user_id())
+
+    if request.method == "GET":
+        return render_template("profile_text.html", profile_text=profile_text)
+    
+    if request.method == "POST":
+        profile_text = request.form["profile_text"]
+        if profiles.add_profile_text(users.user_id(), profile_text):
+            return redirect("/profile")
+        else:
+            print("profiilitekstin päivittäminen epäonnistui")
+            #tähän vielä error.html käsittely
 
 @app.route("/edit_job_experience", methods = ["GET", "POST"])
 def edit_job_experience():

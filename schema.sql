@@ -8,7 +8,8 @@ CREATE TABLE users (
 CREATE TABLE profile_text (
 	id SERIAL PRIMARY KEY,
 	user_id INTEGER REFERENCES users,
-	text TEXT
+	profile_text TEXT,
+	visible INTEGER
 );
 
 CREATE TABLE job_experience (
