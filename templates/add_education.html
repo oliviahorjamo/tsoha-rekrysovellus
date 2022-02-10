@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Lisää koulutus</h2>
+
+<form action="/add_education" method ="POST">
+    <p>Koulu: </p>
+    <input type="text" name="school">
+    <br>
+    <p>Tutkinnon taso: </p>
+    <input type="text" name="level">
+    <br>
+    <p>Koulutuksen kuvaus: </p>
+    <input type="text" name="description">
+    <br>
+    <p>Aloituspäivämäärä: </p>
+    <input type="date" name="beginning">
+    <br>
+    <p>Valmistumispäivämäärä: </p>
+    <input type="date" name="graduation">
+    <br>
+    <input type="submit" name="Lisää koulutus">
+</form>
+
+{% endblock %}

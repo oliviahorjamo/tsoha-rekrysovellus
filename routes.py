@@ -62,13 +62,10 @@ def mainpage():
 def profile():
 
     profile_text = profiles.get_profile_text(users.user_id())
-    print(profile_text)
 
     job_experience = profiles.get_job_experience(users.user_id())
-    print(job_experience)
 
     education = profiles.get_education(users.user_id())
-    print(education)
 
     #nyt on haettu profiiliteksti, työkokemus ja koulutus
         #jos ei ole näitä, näytetään vaihtoehdot lisää
@@ -132,6 +129,23 @@ def edit_job_experience():
     when editing a job experience, return the html file with the existing job experience
     then insert the new information and delete the old one"""
     pass
+
+@app.route("/add_education", methods =["GET", "POST"])
+def add_education():
+    if request.method == "GET":
+        return render_template("add_education.html")
+    
+    if request.method == "POST":
+
+        school = request.form["school"]
+        level = request.form["level"]
+        description = request.form["description"]
+        beginning = request.form["beginning"]
+        graduation = request.form["graduation"]
+
+        profiles.add_education(users.user_id(), school, level, description, beginning, graduation)
+
+        return redirect("/profile")
 
 @app.route("/edit_education", methods = ["GET", "POST"])
 def edit_education():

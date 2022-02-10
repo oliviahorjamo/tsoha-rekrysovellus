@@ -4,7 +4,6 @@ from db import db
 #profiilitekstin muokkaaminen tehdään lähettämällä uusi profiiliteksti ja poistamalla sen jälkeen vanha jos onnistuu
 
 def add_profile_text(user_id, text):
-    print("minua kutsuttiin")
     """adds profile text to the profile (both employees and employers)"""
     try:
         sql = "UPDATE PROFILE_TEXT SET visible = 0 WHERE user_id=:user_id"
@@ -46,17 +45,25 @@ def add_job(user_id, employer, role, description, beginning, ended):
 
 def get_job_experience(user_id):
     """returns all the job experience of a user (only for employees)"""
-    sql = "SELECT employer, role, description, beginning, ended FROM JOB_EXPERIENCE WHERE user_id=:user_id"
+    sql = "SELECT employer, role, description, beginning, ended FROM JOB_EXPERIENCE WHERE user_id=:user_id ORDER BY ended"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def delete_job(user_id):
     """deletes a given job experience of a user (only for employees)"""
+    pass
 
-def add_education(user_id):
+def add_education(user_id, school, level, description, beginning, graduation):
     """adds an education (only for employees)"""
+    sql = """INSERT into EDUCATION (user_id, school, level, description, beginning, graduation) VALUES (:user_id, :school, 
+    :level, :description, :beginning, :graduation)"""
+    db.session.execute(sql, {"user_id":user_id, "school":school, "level":level, "description":description, "beginning":beginning, "graduation":graduation})
+    db.session.commit()
 
 def delete_education(user_id):
-    """deletes and education (only for employees"""
+    """deletes and education (only for employees)"""
+    pass
 
 def get_education(user_id):
     """returns all the education of a user (only for employees)"""
+    sql = "SELECT school, level, description, beginning, graduation FROM EDUCATION WHERE user_id=:user_id ORDER BY graduation"
+    return db.session.execute(sql, {"user_id":user_id}).fetchall()

@@ -24,7 +24,8 @@ Tyhmää hakea routes.py tiedostossa kummankin sivun kohdalla erikseen profiilit
 
 {% endif %}
 
-<!-- Pitäisi jotenkin mahdollistaa yksittäisen työkokemuksen muokkaaminen-->
+<!-- Pitäisi jotenkin mahdollistaa yksittäisen työkokemuksen muokkaaminen
+Lisäksi mahdollisuus poistaa työkokemusta? -> visible sarake job_experience -tauluun?-->
 <p>Työkokemuksesi:</p>
     {% for job in job_experience %}
     <p>-------------------</p>
@@ -44,16 +45,22 @@ Tyhmää hakea routes.py tiedostossa kummankin sivun kohdalla erikseen profiilit
 
 
 
-{% if education %}
-<p>Tässä on koulutus listattuna tyyliin
-    Koulutus 1
-    Muokkaa koulutusta 1 <a href="/edit_education">Muokkaa koulutusta</a>
-    Koulutus 2
-    Muokkaa koulutusta 2 <a href="/edit_education">Muokkaa koulutusta</a>
-</p>
-{% else %}
-<p>Lisää koulutus tästä: <a href="/edit_education">Lisää koulutus </a></p>
-{% endif %}
+<p>Koulutuksesi:</p>
+    {% for education in education %}
+    <p>-------------------</p>
+    <p>Koulu: {{education[0]}} </p>
+    <p>Koulutuksen taso: {{education[1]}}</p>
+    <p>Koulutuksen kuvaus:</p>
+    {{education[2]}}
+    <p>Aloituspäivämäärä: {{education[3]}}</p>
+    <p>Valmistumispäivämäärä: {{education[4]}}</p> 
+    <br>
+    Muokkaa koulutusta <a href="/edit_education">Muokkaa koulutusta</a>
+    <br>
+    <p>-------------------</p>
+    {% endfor %}
+
+<p>Lisää koulutus tästä: <a href="/add_education">Lisää koulutus </a></p>
 
 
 <a href="/mainpage">Palaa etusivulle</a>
