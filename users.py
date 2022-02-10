@@ -7,24 +7,21 @@ from werkzeug.security import check_password_hash, generate_password_hash
 #in the employers -table
 
 def login(name, password):
-    sql = "SELECT password, id FROM employees WHERE name=:name"
+    sql = "SELECT password, id, role FROM users WHERE name=:name"
     result = db.session.execute(sql, {"name":name})
     user = result.fetchone()
+    print("user", user)
     if not user:
-        sql = "SELECT password, id FROM employers WHERE name=:name"
-        result = db.session.execute(sql, {"name":name})
-        user = result.fetchone()
-        if not user:
-            return False
-        if not check_password_hash(user[0], password):
-            return False
-        session["user_role"] = 1
-    else:
-        if not check_password_hash(user[0], password):
-            return False
-        session["user_role"] = 0
+        return False
+    if not check_password_hash(user[0], password):
+        return False
+    print("user_role", user[2])
 
+    session["user_role"] = user[2]
+
+    print("user_id", user[1])
     session["user_id"] = user[1]
+
     session["user_name"] = name
     session["csrf_token"] = os.urandom(16).hex()
     return True
@@ -35,34 +32,14 @@ def logout():
     del session["user_role"]
 
 def register(name, password, role):
-    print("db", db)
-    print("minua kutsuttiin")
     hash_value = generate_password_hash(password)
-    print("role", role)
-    print(type(role))
-    print(role == "1")
-    print(role == "0")
-    if role == "1":
-        print("roolini on 1")
-        try:
-            sql = "INSERT INTO employers (name, password) VALUES (:name, :password)"
-            print("olen tehnyt sql lauseen, rooli = 1")
-            db.session.execute(sql, {"name":name, "password":hash_value})
-            print("olen suorittanut sql komennon, rooli = 1")
-            db.session.commit()
-            print("commit onnistui")
-        except:
-            return False
-    elif role == "0":
-        try:
-            print("olen tryssa")
-            sql = "INSERT INTO employees (name, password) VALUES (:name, :password)"
-            print("olen tehnyt sql lauseen")
-            db.session.execute(sql, {"name":name, "password":hash_value})
-            print("olen suorittanut executen")
-            db.session.commit()
-        except:
-            return False
+    try:
+        sql = "INSERT INTO users (name, password, role) VALUES (:name, :password, :role)"
+        db.session.execute(sql, {"name":name, "password":hash_value, "role": role})
+        db.session.commit()
+        print("commit onnistui")
+    except:
+        return False
     return login(name, password)
 
 def user_id():

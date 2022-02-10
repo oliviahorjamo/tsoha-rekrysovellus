@@ -1,20 +1,19 @@
-CREATE TABLE employers (
+CREATE TABLE users (
 	id SERIAL PRIMARY KEY,
 	name TEXT,
 	password TEXT,
-	profile_text TEXT
+	role INTEGER
 );
 
-CREATE TABLE employees (
+CREATE TABLE profile_text (
 	id SERIAL PRIMARY KEY,
-	name TEXT,
-	password TEXT,
-	profile_text TEXT
+	user_id INTEGER REFERENCES users,
+	text TEXT
 );
 
 CREATE TABLE job_experience (
 	id SERIAL PRIMARY KEY,
-	employee_id INTEGER REFERENCES employees,
+	user_id INTEGER REFERENCES users,
 	employer TEXT,
 	role TEXT,
 	description TEXT,
@@ -24,7 +23,7 @@ CREATE TABLE job_experience (
 
 CREATE TABLE education (
 	id SERIAL PRIMARY KEY,
-	employee_id INTEGER REFERENCES employees,
+	user_id INTEGER REFERENCES users,
 	school TEXT,
 	level TEXT,
 	description TEXT,
@@ -46,16 +45,14 @@ CREATE TABLE application_forms (
 
 CREATE TABLE jobs (
 	id SERIAL PRIMARY KEY,
-	employer_id INTEGER REFERENCES employers,
-	employee_id INTEGER REFERENCES employees,
+	employer_id INTEGER REFERENCES users,
 	role TEXT,
 	description TEXT,
 	beginning DATE,
 	ends DATE,
 	status INTEGER,
 	visible INTEGER,
-	form INTEGER REFERENCES application_forms,
-	visible_in_profile INTEGER
+	form INTEGER REFERENCES application_forms
 );
 
 
@@ -68,5 +65,6 @@ CREATE TABLE applications (
 	amswer_4 TEXT,
 	answer_5 TEXT,
 	sent_at TIMESTAMP,
-	employee_id INTEGER REFERENCES employees
+	user_id INTEGER REFERENCES users,
+	status INTEGER
 );
