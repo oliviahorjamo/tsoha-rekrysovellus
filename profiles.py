@@ -1,6 +1,8 @@
 
 from db import db
 
+#profiilitekstin muokkaaminen tehdään lähettämällä uusi profiiliteksti ja poistamalla sen jälkeen vanha jos onnistuu
+
 def add_profile_text(user_id, user_role, text):
     """adds profile text to the profile (both employees and employers)"""
     if user_role == 0:
