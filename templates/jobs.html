@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{%block content %}
+
+<h2>Etusivu</h2>
+
+{% if session.username %}
+<p>Olet kirjautunut nimellä <b> {{ session.user_name }}</b>. </p>
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+Et ole kirjautunut sisään. <a hred="/login">Kirjaudu sisään</a>
+{% endif %}
+
+<p>
+
+Haettavissa olevat työpaikat:
+
+<ul>
+{%for job in jobs %}
+<li><a href="/job{{job.id}}">{{job.name}}</a>
+{%endfor%}
+</ul>
+
+{if session.user_role == 1 %}
+<h3> Työnantajan toiminnot </h3>
+<ul>
+<li> <a href="/add"> Lisää uusi työpaikkailmoitus </a>
+<ul>
+{% endif %}
+{%endblock %}

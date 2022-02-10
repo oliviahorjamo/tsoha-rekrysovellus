@@ -64,7 +64,7 @@ def profile():
     profile_text = profiles.get_profile_text(users.user_id())
     print(profile_text)
 
-    job_experience = profiles.get_jobs(users.user_id())
+    job_experience = profiles.get_job_experience(users.user_id())
     print(job_experience)
 
     education = profiles.get_education(users.user_id())
@@ -109,14 +109,32 @@ def edit_profile():
             print("profiilitekstin päivittäminen epäonnistui")
             #tähän vielä error.html käsittely
 
+@app.route("/add_job_experience", methods = ["GET", "POST"])
+def add_job_experience():
+    if request.method == "GET":
+        return render_template("add_job_experience.html")
+    
+    if request.method == "POST":
+
+        employer = request.form["employer"]
+        role = request.form["role"]
+        description = request.form["description"]
+        beginning = request.form["beginning"]
+        ended = request.form["ended"]
+        profiles.add_job(users.user_id(), employer, role, description, beginning, ended)
+
+        return redirect("/profile")
+
 @app.route("/edit_job_experience", methods = ["GET", "POST"])
 def edit_job_experience():
     """finds the html for editing a job experience and returns it
     calls for functions add_job_experience and delete_job_experience in profiles.py
     when editing a job experience, return the html file with the existing job experience
     then insert the new information and delete the old one"""
+    pass
 
 @app.route("/edit_education", methods = ["GET", "POST"])
 def edit_education():
     """finds the html for editing education and returns in
     calls for function add_education and delete_education in profiles.py"""
+    pass

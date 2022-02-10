@@ -24,18 +24,24 @@ Tyhmää hakea routes.py tiedostossa kummankin sivun kohdalla erikseen profiilit
 
 {% endif %}
 
-{% if job_experience %}
-<p>Tässä on työkokemukset listattuna tyyliin
-    Työkokemus 1
-    Muokkaa työkokemusta 1 <a href="/edit_job_experience">Muokkaa työkokemusta</a>
-    Työkokemus 2
-    Muokkaa työkokemusta 2 <a href="/edit_job_experience">Muokkaa työkokemusta</a>
-</p>
+<!-- Pitäisi jotenkin mahdollistaa yksittäisen työkokemuksen muokkaaminen-->
+<p>Työkokemuksesi:</p>
+    {% for job in job_experience %}
+    <p>-------------------</p>
+    <p>Työnantaja: {{job[0]}} </p>
+    <p>Roolisi: {{job[1]}}</p>
+    <p>Työnkuvaus:</p>
+    {{job[2]}}
+    <p>Alkupäivämäärä: {{job[3]}}</p>
+    <p>Loppupäivämäärä: {{job[4]}}</p> 
+    <br>
+    Muokkaa työkokemusta <a href="/edit_job_experience">Muokkaa työkokemusta</a>
+    <br>
+    <p>-------------------</p>
+    {% endfor %}
 
-{% else %}
-<p>Lisää työkokemus tästä: <a href="/edit_job_experience">Lisää työkokemus </a></p>
+<p>Lisää työkokemus tästä: <a href="/add_job_experience">Lisää työkokemus </a></p>
 
-{% endif %}
 
 
 {% if education %}

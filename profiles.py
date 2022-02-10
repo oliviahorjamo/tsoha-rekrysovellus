@@ -37,13 +37,17 @@ def get_profile_text(user_id):
     except:
         return False
 
-def add_job(user_id):
+def add_job(user_id, employer, role, description, beginning, ended):
     """adds a job experience into the profile (only for employees)"""
-    pass
+    sql = """INSERT into JOB_EXPERIENCE (user_id, employer, role, description, beginning, ended) VALUES (:user_id, :employer, 
+    :role, :description, :beginning, :ended)"""
+    db.session.execute(sql, {"user_id":user_id, "employer":employer, "role":role, "description":description, "beginning":beginning, "ended":ended})
+    db.session.commit()
 
-def get_jobs(user_id):
+def get_job_experience(user_id):
     """returns all the job experience of a user (only for employees)"""
-    pass
+    sql = "SELECT employer, role, description, beginning, ended FROM JOB_EXPERIENCE WHERE user_id=:user_id"
+    return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
 def delete_job(user_id):
     """deletes a given job experience of a user (only for employees)"""
