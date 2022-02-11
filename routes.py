@@ -3,6 +3,7 @@ from flask import render_template, request, redirect
 import users
 import profiles
 import jobs
+import applications
 
 @app.route("/")
 def index():
@@ -57,7 +58,11 @@ def logout():
 
 @app.route("/mainpage", methods = ["GET", "POST"])
 def mainpage():
-    return render_template("mainpage.html")
+    #tähän kohtaan työpaikkojen listaus
+    #hae työpaikat jobs.py get_all_jobs funktiolle
+    #sit anna lista parametrina
+    open_jobs = jobs.get_open_jobs()
+    return render_template("mainpage.html", open_jobs = open_jobs)
 
 @app.route("/profile", methods = ["GET", "POST"])
 def profile():
@@ -177,10 +182,45 @@ def add_job():
         question_5 = request.form["question_5"]
         job_id = jobs.add_job(users.user_id(), role, description, beginning, ends, application_period_closes)
         
-        print("job_id", job_id)
-        #hakulomakkeen lisääminen
         #TODO syötteen oikeellisuuden tarkistus
         
         jobs.add_application_form(job_id, question_1, question_2, question_3, question_4, question_5)
+
+        return redirect("/mainpage")
+
+@app.route("/job_info/<int:job_id>", methods = ["GET"])
+def show_job(job_id):
+
+    info = jobs.get_job_info(job_id)
+
+    if request.method == "GET":
+        return render_template("show_job.html", info=info)
+
+@app.route("/apply/<int:job_id>", methods = ["GET" ,"POST"])
+def apply(job_id):
+
+    #jobs funktiolla get_application_form etsitään kysymykset
+    #kysymykset parametrina html:lle
+    #post metodi lähettää hakemuksen
+
+    application_form = jobs.get_application_form(job_id)
+    form_id = application_form.id
+
+    if request.method == "GET":
+        return render_template("apply.html", application_form=application_form, job_id=job_id)
+
+    if request.method == "POST":
+
+        #MIKÄ IHME TÄSSÄ MENEE PIELEEN?
+
+        answer_1 = request.form["answer_1"]
+        answer_2 = request.form["answer_2"]
+        answer_3 = request.form["answer_3"]
+        answer_4 = request.form["answer_4"]
+        answer_5 = request.form["answer_5"]
+
+        applications.send_application(users.user_id(), job_id, form_id, answer_1, answer_2, answer_3, answer_4, answer_5)
+
+    #TODO sivu muuttuisi sellaiseksi että näkyy lähetetty lomake ja sitä voisi muokata
 
         return redirect("/mainpage")

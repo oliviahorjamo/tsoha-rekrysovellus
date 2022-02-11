@@ -3,7 +3,21 @@
 
 <h2> Etusivu </h2>
 
-<h3>Kaikki työpaikkailmoitukset</h3>
+<h3>Kaikki avoimet työpaikat</h3>
+<!--Tähän kohtaan for loop parametrina annetuista kaikista töistä
+listaa kaikista töistä tyyliin nimi ja työnantaja listana
+jossa jokainen item on linkki kyseisen työpaikan sivulle
+
+työpaikan sivulla koko kuvaus ja mahdollisuus hakea-->
+
+{% for job in open_jobs %}
+    <p>---------</p>
+    <p>Rooli: {{job[2]}}</p>
+    <p>Työnantaja: {{job[0]}}</p>
+    <p><a href="/job_info/{{ job[1] }}">Näytä tiedot: {{job[2]}}</a></p>
+    <p>----------</p>
+{% endfor %}
+
 
 <p>Voit tarkastella omaa profiiliasi tästä: <a href ="/profile"> Oma profiilisi </a></p>
 
@@ -13,7 +27,7 @@
 
 {% if session.user_role == 1 %}
 <p>Voit tarkastella ja muokata omia työpaikkailmoituksiasi tästä: <a href="/own_jobs">Omat ilmoituksesi</a> </a></p>
-<p>Voit lisätä uuden ilmoituksen tästä: <a href="/add">Lisää uusi työpaikkailmoitus</a></p>
+<p>Voit lisätä uuden ilmoituksen tästä: <a href="/add_job">Lisää uusi työpaikkailmoitus</a></p>
 {% endif %}
 
 Olet kirjautunut sisään nimellä <b> {{session.user_name }} </b>. <a href="/logout"> Kirjaudu ulos</a>

@@ -58,6 +58,7 @@ CREATE TABLE jobs (
 
 
 CREATE TABLE applications (
+	id SERIAL PRIMARY KEY,
 	form_id INTEGER REFERENCES application_forms,
 	job_id INTEGER REFERENCES jobs,
 	answer_1 TEXT,
