@@ -2,6 +2,7 @@ from app import app
 from flask import render_template, request, redirect
 import users
 import profiles
+import jobs
 
 @app.route("/")
 def index():
@@ -152,3 +153,34 @@ def edit_education():
     """finds the html for editing education and returns in
     calls for function add_education and delete_education in profiles.py"""
     pass
+
+@app.route("/add_job", methods = ["GET", "POST"])
+def add_job():
+    users.require_role(1)
+
+    if request.method == "GET":
+        return render_template("add_job.html")
+
+    if request.method == "POST":
+
+        #TODO syötteen oikeellisuuden tarkistus ja virhemahdollisuuden käsittely
+
+        role = request.form["role"]
+        description = request.form["description"]
+        beginning = request.form["beginning"]
+        ends = request.form["ends"]
+        application_period_closes = request.form["application_period_closes"]
+        question_1 = request.form["question_1"]
+        question_2 = request.form["question_2"]
+        question_3 = request.form["question_3"]
+        question_4 = request.form["question_4"]
+        question_5 = request.form["question_5"]
+        job_id = jobs.add_job(users.user_id(), role, description, beginning, ends, application_period_closes)
+        
+        print("job_id", job_id)
+        #hakulomakkeen lisääminen
+        #TODO syötteen oikeellisuuden tarkistus
+        
+        jobs.add_application_form(job_id, question_1, question_2, question_3, question_4, question_5)
+
+        return redirect("/mainpage")

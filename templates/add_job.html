@@ -1,0 +1,60 @@
+<!--saatavilla vain työnantajalle
+routes tarvitaan reitti tälle sivulle
+    - lomakkeella kysytään tiedot
+    - myös hakulomakkeen kysymykset
+jobs.py tiedostoon tarvitaan add_job funktio, jota kutsutaan töiden lisäämiseen
+sitten kutsutaan add_application_form (myös job.py -moduulissa koska liittyy
+vain töihin eikä hakemuksiin?) joka lisää hakulomakkeen tietokantaan ja viitteen jobs
+-tauluun 
+-->
+
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Lisää työpaikka</h2>
+
+{% if session.user_role == 1 %}
+
+<form action="/add_job" method ="POST">
+    <p>Rooli: </p>
+    <input type="text" name="role">
+    <br>
+    <p>Työnkuvaus: </p>
+    <input type="text" name="description">
+    <br>
+    <p>Alkupäivämäärä: </p>
+    <input type="date" name="beginning">
+    <br>
+    <p>Loppupäivämäärä: </p>
+    <input type="date" name="ends">
+    <br>
+    <p>Haku loppuu: </p>
+    <input type ="date" name="application_period_closes">
+    <br>
+    <p>Lisää hakulomakkeen kysymykset: </p>
+    <br>
+    <p>Kysymys 1: </p>
+    <input type="text" name="question_1">
+    <br>
+    <p>Kysymys 2: </p>
+    <input type="text" name="question_2">
+    <br>
+    <p>Kysymys 3: </p>
+    <input type="text" name="question_3">
+    <br>
+    <p>Kysymys 4: </p>
+    <input type="text" name="question_4">
+    <br>
+    <p>Kysymys 5: </p>
+    <input type="text" name="question_5">
+    <br>
+    <input type="submit" name="Lisää työpaikkailmoitus">
+</form>
+
+{% else %}
+<p>Työntakijä roolissa ei voi lisätä työpaikkoja.</p>
+
+{% endif %}
+
+<a href="/mainpage">Palaa etusivulle</a>
+{% endblock %}
