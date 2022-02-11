@@ -34,8 +34,6 @@ CREATE TABLE education (
 
 CREATE TABLE application_forms (
         id SERIAL PRIMARY KEY,
-        opened TIMESTAMP,
-        closing DATE,
         question_1 TEXT,
         question_2 TEXT,
         question_3 TEXT,
@@ -47,6 +45,8 @@ CREATE TABLE application_forms (
 CREATE TABLE jobs (
 	id SERIAL PRIMARY KEY,
 	employer_id INTEGER REFERENCES users,
+	opened TIMESTAMP,
+	closing DATE,
 	role TEXT,
 	description TEXT,
 	beginning DATE,
