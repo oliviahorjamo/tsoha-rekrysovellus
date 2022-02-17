@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Kaikki hakemukset paikkaan: {{job_role}}</h2>
+
+<ul>
+{% for applicant in all_applicants %}
+<li><p>{{applicant.name}} <a href = "/application/{{applicant.id}}">Tarkastele hakijan hakemusta</a></p></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

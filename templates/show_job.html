@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %} 
+
+<h2> Työpaikan tiedot </h2>
+
+<p> Rooli: {{info.role}}</p>
+<br>
+<p>Työnantaja: {{info.name}}</p>
+<br>
+<p>Työpaikan kuvaus:</p>
+<p>{{info.description}}</p>
+<br>
+<p>Työ alkaa: {{info.beginning}} ja päättyy {{info.ends}}</p>
+<p>Haku on auennut: {{info.opened}} ja päättyy {{info.closing}}</p>
+<br>
+{% if session.user_role == 0 %}
+<!--Tähän täytyis jotenkin keksii tapa käsitellä tilannetta jossa työntekijä on jo hakenut paikkaa -->
+{% if info.id == None %}
+<p><a href="/apply/{{info.id}}">Hae paikkaa</a></p>
+{% else %}
+<p> <a href ="/application/{{info.id}}">Tarkastele hakemustasi</a></p>
+{% endif %}
+<!--Tähän linkki hakijan hakemukseen jos hakenut jo paikkaa?-->
+{% endif %}
+
+{% endblock %}

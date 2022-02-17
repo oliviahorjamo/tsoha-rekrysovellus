@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+
+{% if user_role == 0 %}
+<p>Hakemuksesi työpaikkaan: {{application.role}}</p>
+{% else %}
+<p> Hakijan {{application.name}} hakemus työpaikkaa {{application.role}}</p>
+{% endif %}
+
+eka kysymys
+{{application.question_1}}
+{{application.answer_1}}
+
+toka kysymys 
+vastaus
+
+muokkaa hakemusta?
+lähetä uusi hakemus?
+
+
+{% endblock %}

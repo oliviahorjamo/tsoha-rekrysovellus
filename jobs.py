@@ -4,14 +4,16 @@ from users import user_role
 
 def get_my_jobs(user_id, status):
     """returns all the jobs the user has created if an employer,
-    return all the jobs the user has applied for if an employee"""
+    returns all the jobs the user has applied for if an employee"""
     if user_role() == 0:
         sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
         WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:status"""
         return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
-    if user_role == (1):
+    if user_role() == (1):
         #palauta tietyn työnantajan lisäämät työpaikat
-        pass
+        sql = """SELECT role, id, description from jobs where employer_id =:user_id and
+        status =:status"""
+        return db.session.execute(sql, {"user_id": user_id, "status":status}).fetchall()
 
 def get_open_jobs():
     """returns all the jobs (in the main page)"""
@@ -60,3 +62,7 @@ def get_application_form(job_id):
     sql = """SELECT a.id, question_1, question_2, question_3, question_4, question_5 
     from application_forms a, jobs j where j.form = a.id and j.id=:job_id"""
     return db.session.execute(sql, {"job_id":job_id}).fetchone()
+
+def get_job_role(job_id):
+    sql = "select role from jobs where id =:job_id"
+    return db.session.execute(sql, {"job_id":job_id}).fetchone()[0]

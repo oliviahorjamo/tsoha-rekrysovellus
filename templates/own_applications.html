@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Hakemasi työpaikat: </h2>
+
+<!--TODO, jos ei yhtään työpaikkaa, tee käyttöliittymästä järkevämpi-->
+<h3>Saadut työpaikat:</3>
+
+{% for application in got_elected %}
+<p>------------</p>
+<p>Rooli: {{application.role}}</p>
+<p>Työnantaja: {{application.name}}</p>
+<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+{% endfor %}
+
+<h3>Haku auki: </h3>
+{% for application in open_applications %}
+<p>------------</p>
+<p>Rooli: {{application.role}}</p>
+<p>Työnantaja: {{application.name}}</p>
+<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+{% endfor %}
+
+<h3>Haku päättynyt: </h3>
+{% for application in application_period_ended %}
+<p>------------</p>
+<p>Rooli: {{application.role}}</p>
+<p>Työnantaja: {{application.name}}</p>
+<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+{% endfor %}
+
+{% endblock %}

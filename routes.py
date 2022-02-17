@@ -267,4 +267,33 @@ def show_application(id):
 
     #lähettää hakemuksen parametrina html:lle
     if request.method == "GET":
-        return render_template("my_application.html", application=application)
+        return render_template("show_application.html", application=application, user_role = users.user_role())
+
+@app.route("/own_jobs", methods = ["GET", "POST"])
+def own_jobs():
+    #hakee tietyn työnantajan työpaikat statuksen mukaan parametrina html:lle
+
+    #auki olevat haut
+        #tarjoaa linkin hakemusten tarkasteluun
+        #tarjoaa mahdollisuuden työpaikkailmoituksen sulkemiseen?
+    open_jobs = jobs.get_my_jobs(users.user_id(), 0)
+    print(open_jobs)
+
+    #päättyneet haut
+    application_period_ended = jobs.get_my_jobs(users.user_id(), 1)
+
+    if request.method == "GET":
+        return render_template("my_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
+
+
+@app.route("/all_applicants/<int:job_id>", methods = ["GET", "POST"])
+def all_applications(job_id):
+    #hakee tietyn työpaikan kaikki hakemukset parametriksi html:lle
+    #post tarjoaa mahdollisuuden valita tietty työtekijä paikkaan ja ilmoittaa
+    #muille että haku on päättynyt
+
+    all_applicants = applications.get_all_applicants(job_id)
+    job_role = jobs.get_job_role(job_id)
+
+    if request.method == "GET":
+        return render_template("all_applicants.html", all_applicants=all_applicants, job_role = job_role, job_id=job_id)
