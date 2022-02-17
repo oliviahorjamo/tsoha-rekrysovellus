@@ -191,7 +191,9 @@ def add_job():
 @app.route("/job_info/<int:job_id>", methods = ["GET"])
 def show_job(job_id):
 
-    info = jobs.get_job_info(job_id)
+    info = jobs.get_job_info(job_id, users.user_id())
+
+    print(info)
 
     if request.method == "GET":
         return render_template("show_job.html", info=info)
@@ -224,3 +226,38 @@ def apply(job_id):
     #TODO sivu muuttuisi sellaiseksi että näkyy lähetetty lomake ja sitä voisi muokata
 
         return redirect("/mainpage")
+
+@app.route("/own_applications", methods = ["GET", "POST"])
+def own_applications():
+    #hae omat hakemukset
+    #grouppaa statuksen mukaan?
+
+    #applications.py tiedostoon funktio own_applications
+
+    #listataan tässä kaikki työpaikat joita on jo hakenut tyyliin
+    #rooli
+    #työnantaja
+    #työnhaun status
+    #tarkastele hakemustasi tästä
+
+    #auki olevat haut
+    open_applications = applications.own_applications(users.user_id(), status = 0)
+
+    #päättyneet haut
+    application_period_ended = applications.own_applications(users.user_id(), status = 1)
+
+    #poistetut?
+
+    #saadut työpaikat
+    got_elected = applications.own_applications(users.user_id(), status = 2)
+
+    if request.method == "GET":
+        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, application_period_ended=application_period_ended)
+
+    print("open applications", open_applications)
+    print("got_elected", got_elected)
+
+@app.route("/application/<int:id>", methods = ["GET", "POST"])
+def show_application(id):
+    #näyttää kyseisellä id:llä olevan hakemuksen
+    pass

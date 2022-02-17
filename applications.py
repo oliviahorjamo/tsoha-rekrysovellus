@@ -48,3 +48,7 @@ def get_application_status(application_id, user_id):
     #pitäiskö tän olla jobs.py -tiedostossa mieluummin?
     pass
 
+def own_applications(user_id, status):
+    sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
+    WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:status"""
+    return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
