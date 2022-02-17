@@ -49,6 +49,14 @@ def get_application_status(application_id, user_id):
     pass
 
 def own_applications(user_id, status):
+    """returns all jobs a given user has applied for and that has a given status"""
+    #TODO hakee vaan uusimman hakemuksen per työpaikka
     sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
     WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:status"""
     return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
+
+def show_application(id):
+    sql = """SELECT j.role, af.question_1, af.question_2, af.question_3, af.question_4,
+    af.question_5, a.answer_1, a.answer_2, a.answer_3, a.answer_4, a.answer_5 FROM applications a, application_forms af, jobs j
+    where j.id = a.job_id and a.form_id = af.id and a.id=:id"""
+    return db.session.execute(sql, {"id":id}).fetchone()

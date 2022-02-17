@@ -1,10 +1,17 @@
 from db import db
 from users import user_id
+from users import user_role
 
-def get_my_jobs(user_id):
+def get_my_jobs(user_id, status):
     """returns all the jobs the user has created if an employer,
     return all the jobs the user has applied for if an employee"""
-    pass
+    if user_role() == 0:
+        sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
+        WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:status"""
+        return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
+    if user_role == (1):
+        #palauta tietyn työnantajan lisäämät työpaikat
+        pass
 
 def get_open_jobs():
     """returns all the jobs (in the main page)"""

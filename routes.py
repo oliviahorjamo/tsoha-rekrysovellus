@@ -241,15 +241,15 @@ def own_applications():
     #tarkastele hakemustasi tästä
 
     #auki olevat haut
-    open_applications = applications.own_applications(users.user_id(), status = 0)
+    open_applications = jobs.get_my_jobs(users.user_id(), status = 0)
 
     #päättyneet haut
-    application_period_ended = applications.own_applications(users.user_id(), status = 1)
+    application_period_ended = jobs.get_my_jobs(users.user_id(), status = 1)
 
     #poistetut?
 
     #saadut työpaikat
-    got_elected = applications.own_applications(users.user_id(), status = 2)
+    got_elected = jobs.get_my_jobs(users.user_id(), status = 2)
 
     if request.method == "GET":
         return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, application_period_ended=application_period_ended)
@@ -259,5 +259,12 @@ def own_applications():
 
 @app.route("/application/<int:id>", methods = ["GET", "POST"])
 def show_application(id):
+
     #näyttää kyseisellä id:llä olevan hakemuksen
-    pass
+    application = applications.show_application(id)
+
+    print(application)
+
+    #lähettää hakemuksen parametrina html:lle
+    if request.method == "GET":
+        return render_template("my_application.html", application=application)
