@@ -15,7 +15,7 @@
 <br>
 {% if session.user_role == 0 %}
 <!--Tähän täytyis jotenkin keksii tapa käsitellä tilannetta jossa työntekijä on jo hakenut paikkaa -->
-{% if info.id == None %}
+{% if applied == False %}
 <p><a href="/apply/{{info.id}}">Hae paikkaa</a></p>
 {% else %}
 <p> <a href ="/application/{{info.id}}">Tarkastele hakemustasi</a></p>

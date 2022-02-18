@@ -56,6 +56,14 @@ def get_application_status(application_id, user_id):
     #pitäiskö tän olla jobs.py -tiedostossa mieluummin?
     pass
 
+def applied_or_not(user_id, job_id):
+    """tells whether the user has applied for the given job or not"""
+    sql = """SELECT id FROM applications where user_id=:user_id AND job_id=:job_id"""
+    id = db.session.execute(sql, {"user_id":user_id, "job_id":job_id}).fetchone()
+    if not id:
+        return False
+    return True
+
 def own_applications(user_id, status):
     """returns all jobs a given user has applied for and that has a given status"""
     #TODO hakee vaan uusimman hakemuksen per työpaikka

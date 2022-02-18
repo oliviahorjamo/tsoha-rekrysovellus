@@ -11,23 +11,23 @@ def get_my_jobs(user_id, status):
         return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
     if user_role() == (1):
         #palauta tietyn työnantajan lisäämät työpaikat
-        sql = """SELECT role, id, description from jobs where employer_id =:user_id and
-        status =:status"""
+        sql = """SELECT j.role, j.id, j.description from jobs j, applications a where employer_id =:user_id and and a.job_id=j.id
+        a. status =:status"""
         return db.session.execute(sql, {"user_id": user_id, "status":status}).fetchall()
 
 def get_open_jobs():
     """returns all the jobs (in the main page)"""
-    sql = """SELECT u.name, j.id, j.role, j.description FROM USERS u, JOBS j WHERE
-    u.id = j.employer_id AND visible = 1 AND status = 0"""
+    sql = """SELECT u.name, j.id, j.role, j.description FROM USERS u, JOBS j, applications a WHERE
+    u.id = j.employer_id AND visible = 1 AND a.job_id=j.id AND a.status = 0"""
     return db.session.execute(sql).fetchall()
 
-def get_job_info(job_id, user_id):
+def get_job_info(job_id):
     """returns the info of a certain job and info on whether the user has applied for the job"""
     sql = """SELECT j.id, j.opened, j.closing, j.role, j.description,
     j.beginning, j.ends, j.form, e.name, af.question_1, af.question_2, af.question_3, af.question_4,
-    af.question_5, a.id FROM JOBS j left join applications a on a.job_id = j.id, users e, application_forms af WHERE j.employer_id = 
-    e.id and j.form = af.id and j.id =:job_id and a.user_id =:user_id"""
-    return db.session.execute(sql, {"job_id":job_id, "user_id":user_id}).fetchone()
+    af.question_5 FROM JOBS j, users e, application_forms af WHERE j.employer_id = 
+    e.id and j.form = af.id and j.id =:job_id"""
+    return db.session.execute(sql, {"job_id":job_id}).fetchone()
 
 def add_job(employer_id, role, description, beginning, ends, closing):
     """"adds a new job to apply for (only for employers"""

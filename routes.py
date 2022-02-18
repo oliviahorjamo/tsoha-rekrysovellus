@@ -191,12 +191,14 @@ def add_job():
 @app.route("/job_info/<int:job_id>", methods = ["GET"])
 def show_job(job_id):
 
-    info = jobs.get_job_info(job_id, users.user_id())
+    info = jobs.get_job_info(job_id)
 
     print(info)
 
+    applied = applications.applied_or_not(users.user_id(), job_id)
+
     if request.method == "GET":
-        return render_template("show_job.html", info=info)
+        return render_template("show_job.html", info=info, applied = applied)
 
 @app.route("/apply/<int:job_id>", methods = ["GET" ,"POST"])
 def apply(job_id):
