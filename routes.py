@@ -269,6 +269,7 @@ def show_application(id):
     if request.method == "GET":
         return render_template("show_application.html", application=application, user_role = users.user_role())
 
+
 @app.route("/own_jobs", methods = ["GET", "POST"])
 def own_jobs():
     #hakee tietyn työnantajan työpaikat statuksen mukaan parametrina html:lle
@@ -297,3 +298,13 @@ def all_applications(job_id):
 
     if request.method == "GET":
         return render_template("all_applicants.html", all_applicants=all_applicants, job_role = job_role, job_id=job_id)
+
+@app.route("/select_applicant/<int:application_id>", methods = ["GET", "POST"])
+def select_applicant(application_id):
+
+    users.require_role(1)
+    #kutsu applications.py moduulista funktiota tietyn työntekijän valitsemiseen paikkaan
+
+    applications.select_applicant(application_id)
+
+    return redirect("/own_jobs")

@@ -8,14 +8,18 @@
 {% endif %}
 
 eka kysymys
+<br>
 {{application.question_1}}
+<br>
 {{application.answer_1}}
 
-toka kysymys 
-vastaus
-
-muokkaa hakemusta?
-lähetä uusi hakemus?
-
-
+{% if user_role == 0 %}
+<p>Palaa takaisin omien hakemusten tarkasteluun <a href = "/own_applications">Palaa takaisin omien hakemusten tarkasteluun </a></p> 
+<p>Mahdollisesti muokkaa hakemusta?</p>
+<p>Tai poista hakemus kokonaan?</p>
+{% else %}
+<br>
+<p>Valitse hakija työpaikkaan <a href = "/select_applicant/{{application.application_id}}">Valitse hakija</a></p>
+<p>Valitse hakija työpaikkaanPalaa tarkastelemaan hakemuksia <a href = "/all_applicants/{{application.job_id}}">Palaa tarkastelemaan hakemuksia</a></p>
+{% endif %}
 {% endblock %}

@@ -9,6 +9,10 @@
 
 #tarjoa myös mahdollisuus poista hakemus suoraan
 
+#hakemuksella status 0: paikka avoin
+#hakemuksella status 1: paikka suljettu, hakijaa ei valittu
+#hakemuksella status 2: paikka suljettu, hakija valittu paikkaan
+
 from db import db
 
 def get_all_application_forms():
@@ -60,8 +64,8 @@ def own_applications(user_id, status):
     return db.session.execute(sql, {"user_id":user_id, "status":status}).fetchall()
 
 def show_application(id):
-    sql = """SELECT j.role, u.name, af.question_1, af.question_2, af.question_3, af.question_4,
-    af.question_5, a.answer_1, a.answer_2, a.answer_3, a.answer_4, a.answer_5 FROM applications a, application_forms af, jobs j, users u
+    sql = """SELECT j.role, j.id as job_id, u.name, af.question_1, af.question_2, af.question_3, af.question_4,
+    af.question_5, a.answer_1, a.answer_2, a.answer_3, a.answer_4, a.answer_5, a.id as application_id FROM applications a, application_forms af, jobs j, users u
     where j.id = a.job_id and a.form_id = af.id and a.id=:id and u.id = a.user_id"""
     return db.session.execute(sql, {"id":id}).fetchone()
 
@@ -69,3 +73,20 @@ def get_all_applicants(job_id):
     sql = """select u.name, a.id from applications a, users u where a.job_id =:job_id and
     a.user_id = u.id"""
     return db.session.execute(sql, {"job_id":job_id}).fetchall()
+
+def select_applicant(application_id):
+    """changes the application status to 2 for the selected applicant and to 1 (job closed) for all other applicants"""
+    #päivitä kyseisen hakemuksen status saaduksi
+    sql = """UPDATE applications SET status = 2 WHERE id =:application_id"""
+    db.session.execute(sql, {"application_id":application_id})
+    db.session.commit()
+    #päivitä kaikkien muiden KYSEISEEN TYÖPAIKKAAN LIITTYVIEN hakemusten status suljetuksi
+
+    sql = """SELECT j.id FROM jobs j, applications a WHERE a.id =:application_id AND a.job_id = j.id"""
+    job_id = db.session.execute(sql, {"application_id":application_id}).fetchone()[0]
+
+    print("job_id", job_id)
+
+    sql = """UPDATE applications SET status = 1 WHERE job_id =:job_id AND NOT id =:application_id"""
+    db.session.execute(sql, {"application_id":application_id, "job_id":job_id})
+    
