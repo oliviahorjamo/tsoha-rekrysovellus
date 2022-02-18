@@ -4,7 +4,7 @@
 {% if user_role == 0 %}
 <p>Hakemuksesi työpaikkaan: {{application.role}}</p>
 {% else %}
-<p> Hakijan {{application.name}} hakemus työpaikkaa {{application.role}}</p>
+<p> Hakijan {{application.name}} hakemus työpaikkaan {{application.role}}</p>
 {% endif %}
 
 eka kysymys
@@ -20,6 +20,6 @@ eka kysymys
 {% else %}
 <br>
 <p>Valitse hakija työpaikkaan <a href = "/select_applicant/{{application.application_id}}">Valitse hakija</a></p>
-<p>Valitse hakija työpaikkaanPalaa tarkastelemaan hakemuksia <a href = "/all_applicants/{{application.job_id}}">Palaa tarkastelemaan hakemuksia</a></p>
+<p>Palaa tarkastelemaan hakemuksia <a href = "/all_applicants/{{application.job_id}}">Palaa tarkastelemaan hakemuksia</a></p>
 {% endif %}
 {% endblock %}

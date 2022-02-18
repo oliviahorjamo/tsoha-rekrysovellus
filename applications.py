@@ -83,18 +83,9 @@ def get_all_applicants(job_id):
     return db.session.execute(sql, {"job_id":job_id}).fetchall()
 
 def select_applicant(application_id):
-    """changes the application status to 2 for the selected applicant and to 1 (job closed) for all other applicants"""
+    """changes the application status to 1 for the selected applicant and to 0 for all other applicants, changes the job status to 0 (job not open)"""
     #päivitä kyseisen hakemuksen status saaduksi
-    sql = """UPDATE applications SET status = 2 WHERE id =:application_id"""
+    sql = """UPDATE applications SET status = 1 WHERE id =:application_id"""
     db.session.execute(sql, {"application_id":application_id})
     db.session.commit()
-    #päivitä kaikkien muiden KYSEISEEN TYÖPAIKKAAN LIITTYVIEN hakemusten status suljetuksi
-
-    sql = """SELECT j.id FROM jobs j, applications a WHERE a.id =:application_id AND a.job_id = j.id"""
-    job_id = db.session.execute(sql, {"application_id":application_id}).fetchone()[0]
-
-    print("job_id", job_id)
-
-    sql = """UPDATE applications SET status = 1 WHERE job_id =:job_id AND NOT id =:application_id"""
-    db.session.execute(sql, {"application_id":application_id, "job_id":job_id})
     

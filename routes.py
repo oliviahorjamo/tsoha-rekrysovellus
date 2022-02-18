@@ -242,19 +242,17 @@ def own_applications():
     #työnhaun status
     #tarkastele hakemustasi tästä
 
-    #auki olevat haut
-    open_applications = jobs.get_my_jobs(users.user_id(), status = 0)
+    #paikkaa ei saatu
+    not_elected = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 0)
 
-    #päättyneet haut
-    application_period_ended = jobs.get_my_jobs(users.user_id(), status = 1)
+    #paikka saatu (tällöin job status automaattisesti 0)
+    got_elected = jobs.get_my_jobs(users.user_id(), application_status = 1, job_status = 0)
 
-    #poistetut?
-
-    #saadut työpaikat
-    got_elected = jobs.get_my_jobs(users.user_id(), status = 2)
+    #haku vielä auki (tällöin application status automaattisesti 0)
+    open_applications = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 1)
 
     if request.method == "GET":
-        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, application_period_ended=application_period_ended)
+        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, not_elected = not_elected)
 
     print("open applications", open_applications)
     print("got_elected", got_elected)
@@ -276,14 +274,11 @@ def show_application(id):
 def own_jobs():
     #hakee tietyn työnantajan työpaikat statuksen mukaan parametrina html:lle
 
-    #auki olevat haut
-        #tarjoaa linkin hakemusten tarkasteluun
-        #tarjoaa mahdollisuuden työpaikkailmoituksen sulkemiseen?
-    open_jobs = jobs.get_my_jobs(users.user_id(), 0)
+    open_jobs = jobs.get_my_jobs(users.user_id(), None, 1)
     print(open_jobs)
 
     #päättyneet haut
-    application_period_ended = jobs.get_my_jobs(users.user_id(), 1)
+    application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
 
     if request.method == "GET":
         return render_template("my_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
@@ -308,5 +303,9 @@ def select_applicant(application_id):
     #kutsu applications.py moduulista funktiota tietyn työntekijän valitsemiseen paikkaan
 
     applications.select_applicant(application_id)
+
+    job_id = jobs.get_job_id(application_id)
+
+    jobs.close_job(job_id)
 
     return redirect("/own_jobs")

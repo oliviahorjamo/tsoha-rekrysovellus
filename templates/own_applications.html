@@ -22,7 +22,7 @@
 {% endfor %}
 
 <h3>Haku päättynyt: </h3>
-{% for application in application_period_ended %}
+{% for application in not_elected %}
 <p>------------</p>
 <p>Rooli: {{application.role}}</p>
 <p>Työnantaja: {{application.name}}</p>
