@@ -3,9 +3,11 @@
 <h2>Lisää profiiliteksti</h2>
 <p>Kirjoita profiiliteksti (max. 50 sanaa)</p>
 
-<p>Vanha profiilitekstisi:<br>
-    {{profile_text}}
-</p>
+{% if profile_text %}
+    <p>Vanha profiilitekstisi:<br>
+        {{profile_text}}
+    </p>
+{% endif %}
 
 <form action="/edit_profile" method ="POST">
     <p>Profiiliteksti: </p><br>

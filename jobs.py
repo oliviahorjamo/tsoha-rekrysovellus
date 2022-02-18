@@ -30,13 +30,15 @@ def get_job_info(job_id):
 
 def add_job(employer_id, role, description, beginning, ends, closing):
     """"adds a new job to apply for (only for employers"""
-    sql = """INSERT into JOBS (employer_id, role, description, beginning, ends, opened, closing, status, visible, form) VALUES (:employer_id, 
-    :role, :description, :beginning, :ends, NOW(), :closing, 1, 1, NULL) RETURNING id"""
-    job_id = db.session.execute(sql, {"employer_id":employer_id, "role":role, 
-    "description":description, "beginning":beginning, "ends":ends, "closing":closing}).fetchone()[0]
-    db.session.commit()
-
-    return job_id
+    try:
+        sql = """INSERT into JOBS (employer_id, role, description, beginning, ends, opened, closing, status, visible, form) VALUES (:employer_id, 
+        :role, :description, :beginning, :ends, NOW(), :closing, 1, 1, NULL) RETURNING id"""
+        job_id = db.session.execute(sql, {"employer_id":employer_id, "role":role, 
+        "description":description, "beginning":beginning, "ends":ends, "closing":closing}).fetchone()[0]
+        db.session.commit()
+        return job_id
+    except:
+        return False
 
 def delete_job(user_id, user_role, job_id):
     """removes a job (only available for the one who added the job"""

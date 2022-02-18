@@ -7,14 +7,24 @@
 <p> Hakijan {{application.name}} hakemus työpaikkaan {{application.role}}</p>
 {% endif %}
 
-eka kysymys
-<br>
 {{application.question_1}}
-<br>
 {{application.answer_1}}
+<br>
+{{application.question_2}}
+{{application.answer_2}}
+<br>
+{{application.question_3}}
+{{application.answer_3}}
+<br>
+{{application.question_4}}
+{{application.answer_4}}
+<br>
+{{application.question_5}}
+{{application.answer_5}}
+<br>
 
 {% if user_role == 0 %}
-<p>Palaa takaisin omien hakemusten tarkasteluun <a href = "/own_applications">Palaa takaisin omien hakemusten tarkasteluun </a></p> 
+<p>Palaa takaisin omien hakemusten tarkasteluun <a href = "/own_applications">Omat hakemukset </a></p> 
 <p>Mahdollisesti muokkaa hakemusta?</p>
 <p>Tai poista hakemus kokonaan?</p>
 {% else %}

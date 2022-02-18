@@ -4,29 +4,43 @@
 <h2>Hakemasi työpaikat: </h2>
 
 <!--TODO, jos ei yhtään työpaikkaa, tee käyttöliittymästä järkevämpi-->
-<h3>Saadut työpaikat:</3>
+<h3>Saadut työpaikat:</h3>
 
+{% if not got_elected %}
+<p>Ei näytettäviä työpaikkoja</p>
+{% else %}
 {% for application in got_elected %}
 <p>------------</p>
 <p>Rooli: {{application.role}}</p>
 <p>Työnantaja: {{application.name}}</p>
 <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
 {% endfor %}
+{% endif %}
 
 <h3>Haku auki: </h3>
+{% if not open_applications %}
+<p>Et ole hakenut yhtäkään paikkaa, jonka hakuaika olisi vielä auki</p>
+{% else %}
 {% for application in open_applications %}
 <p>------------</p>
 <p>Rooli: {{application.role}}</p>
 <p>Työnantaja: {{application.name}}</p>
 <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
 {% endfor %}
+{% endif %}
 
 <h3>Haku päättynyt: </h3>
+{% if not not_elected %}
+<p>Ei näytettäviä hakemuksia</p>
+{% else %}
 {% for application in not_elected %}
 <p>------------</p>
 <p>Rooli: {{application.role}}</p>
 <p>Työnantaja: {{application.name}}</p>
 <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
 {% endfor %}
+{% endif %}
 
+<br>
+<p>Palaa etusivulle <a href ="/mainpage">Palaa etusivulle</a></p>
 {% endblock %}

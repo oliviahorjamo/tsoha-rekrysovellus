@@ -46,6 +46,8 @@ Lisäksi mahdollisuus poistaa työkokemusta? -> visible sarake job_experience -t
 
 
 <p>Koulutuksesi:</p>
+<!-- Pitäisi jotenkin mahdollistaa yksittäisen koulutuksen muokkaaminen
+Lisäksi mahdollisuus poistaa koulutuksia? -> visible sarake education -tauluun?-->
     {% for education in education %}
     <p>-------------------</p>
     <p>Koulu: {{education[0]}} </p>
@@ -56,6 +58,7 @@ Lisäksi mahdollisuus poistaa työkokemusta? -> visible sarake job_experience -t
     <p>Valmistumispäivämäärä: {{education[4]}}</p> 
     <br>
     Muokkaa koulutusta <a href="/edit_education">Muokkaa koulutusta</a>
+    <!-- Tää route puuttuu vielä kokonaan, jotenkin pitäisi kyetä antamaan kyseisen koulutuksen tiedot parametrina /edit_education routelle-->
     <br>
     <p>-------------------</p>
     {% endfor %}

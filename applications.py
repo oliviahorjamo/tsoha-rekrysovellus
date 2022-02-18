@@ -30,12 +30,16 @@ def get_application_form(job_id):
 
 def send_application(user_id, job_id, form_id, answer_1, answer_2, answer_3, answer_4, answer_5):
     """sends an application to a given job"""
-    sql = """INSERT INTO applications (user_id, job_id, form_id, answer_1, answer_2, answer_3,
-    answer_4, answer_5, sent_at, status) VALUES (:user_id, :job_id, :form_id, :answer_1,
-    :answer_2, :answer_3, :answer_4, :answer_5, NOW(), 0)"""
-    db.session.execute(sql, {"user_id":user_id, "job_id":job_id, "form_id":form_id,
-    "answer_1": answer_1, "answer_2":answer_2, "answer_3":answer_3, "answer_4":answer_4, "answer_5":answer_5})
-    db.session.commit()
+    try:
+        sql = """INSERT INTO applications (user_id, job_id, form_id, answer_1, answer_2, answer_3,
+        answer_4, answer_5, sent_at, status) VALUES (:user_id, :job_id, :form_id, :answer_1,
+        :answer_2, :answer_3, :answer_4, :answer_5, NOW(), 0)"""
+        db.session.execute(sql, {"user_id":user_id, "job_id":job_id, "form_id":form_id,
+        "answer_1": answer_1, "answer_2":answer_2, "answer_3":answer_3, "answer_4":answer_4, "answer_5":answer_5})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def delete_application(user_id, application_id):
     """deletes a sent application if the job is still open"""

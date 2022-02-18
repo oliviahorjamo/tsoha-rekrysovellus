@@ -36,12 +36,16 @@ def get_profile_text(user_id):
     except:
         return False
 
-def add_job(user_id, employer, role, description, beginning, ended):
+def add_job_experience(user_id, employer, role, description, beginning, ended):
     """adds a job experience into the profile (only for employees)"""
-    sql = """INSERT into JOB_EXPERIENCE (user_id, employer, role, description, beginning, ended) VALUES (:user_id, :employer, 
-    :role, :description, :beginning, :ended)"""
-    db.session.execute(sql, {"user_id":user_id, "employer":employer, "role":role, "description":description, "beginning":beginning, "ended":ended})
-    db.session.commit()
+    try:
+        sql = """INSERT into JOB_EXPERIENCE (user_id, employer, role, description, beginning, ended) VALUES (:user_id, :employer, 
+        :role, :description, :beginning, :ended)"""
+        db.session.execute(sql, {"user_id":user_id, "employer":employer, "role":role, "description":description, "beginning":beginning, "ended":ended})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def get_job_experience(user_id):
     """returns all the job experience of a user (only for employees)"""
@@ -54,10 +58,14 @@ def delete_job(user_id):
 
 def add_education(user_id, school, level, description, beginning, graduation):
     """adds an education (only for employees)"""
-    sql = """INSERT into EDUCATION (user_id, school, level, description, beginning, graduation) VALUES (:user_id, :school, 
-    :level, :description, :beginning, :graduation)"""
-    db.session.execute(sql, {"user_id":user_id, "school":school, "level":level, "description":description, "beginning":beginning, "graduation":graduation})
-    db.session.commit()
+    try:
+        sql = """INSERT into EDUCATION (user_id, school, level, description, beginning, graduation) VALUES (:user_id, :school, 
+        :level, :description, :beginning, :graduation)"""
+        db.session.execute(sql, {"user_id":user_id, "school":school, "level":level, "description":description, "beginning":beginning, "graduation":graduation})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def delete_education(user_id):
     """deletes and education (only for employees)"""

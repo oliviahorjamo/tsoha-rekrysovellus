@@ -19,18 +19,23 @@ def register():
     #creating an account after receiving the registration form
     if request.method == "POST":
         username = request.form["username"]
-        #TODO virheiden käsittely usernamen osalta
+
+        if not 1 < len(username) <15:
+            return render_template("error.html", message = "Käyttäjänimessä tulee olla 1-15 merkkiä")
 
         password1 = request.form["password1"]
         password2 = request.form["password2"]
-        #TODO virheiden käsittely salasanojen osalta
+
+        if password1 != password2:
+            return render_template("error.html", message = "Salasanat eroavat")
+        if password1 == "":
+            return render_template("error.html", message = "Salasana on tyhjä")
 
         role = request.form["role"]
 
         #call for function register in users.py to handle the registration
         if not users.register(username, password1, role):
-            #TODO virheiden käsittely rekisteröitymisen epäonnistumisen kannalta
-            print("Rekisteröinti epäonnistui")
+            return render_template("error.html", message="Rekisteröinti epäonnistui")
 
         return redirect("/mainpage")
 
@@ -106,11 +111,14 @@ def edit_profile():
     
     if request.method == "POST":
         profile_text = request.form["profile_text"]
+
+        if len(profile_text) > 5000:
+            return render_template("error.html", message = "Profiiliteksti on liian pitkä")
+
         if profiles.add_profile_text(users.user_id(), profile_text):
             return redirect("/profile")
         else:
-            print("profiilitekstin päivittäminen epäonnistui")
-            #tähän vielä error.html käsittely
+            return render_template("error.html", message="Profiilitekstin päivittäminen epäonnistui")
 
 @app.route("/add_job_experience", methods = ["GET", "POST"])
 def add_job_experience():
@@ -124,9 +132,20 @@ def add_job_experience():
         description = request.form["description"]
         beginning = request.form["beginning"]
         ended = request.form["ended"]
-        profiles.add_job(users.user_id(), employer, role, description, beginning, ended)
 
-        return redirect("/profile")
+        if len(employer) > 50:
+            return render_template("error.html", message = "Työnantajan nimi voi olla max. 50 merkkiä")
+
+        if len(role) > 50:
+            return render_template("error.html", message = "Rooli voi olla max. 50 merkkiä")
+
+        if len(employer) > 500:
+            return render_template("error.html", message = "Työpaikan kuvaus voi olla max. 500 merkkiä")
+
+        if profiles.add_job_experience(users.user_id(), employer, role, description, beginning, ended):
+            return redirect("/profile")
+        else:
+            return render_template("error.html", message = "Työkokemuksen päivittäminen epäonnistui")
 
 @app.route("/edit_job_experience", methods = ["GET", "POST"])
 def edit_job_experience():
@@ -149,9 +168,19 @@ def add_education():
         beginning = request.form["beginning"]
         graduation = request.form["graduation"]
 
-        profiles.add_education(users.user_id(), school, level, description, beginning, graduation)
+        if len(school) > 50:
+            return render_template("error.html", message = "Koulun nimi voi olla max. 50 merkkiä")
 
-        return redirect("/profile")
+        if len(level) > 50:
+            return render_template("error.html", message = "Koulutuksen tason pituus voi olla max. 50 merkkiä")
+
+        if len(description) > 500:
+            return render_template("error.html", message = "Koulutuksen kuvaus voi olla max. 500 merkkiä")
+
+        if profiles.add_education(users.user_id(), school, level, description, beginning, graduation):
+            return redirect("/profile")
+        else:
+            return False
 
 @app.route("/edit_education", methods = ["GET", "POST"])
 def edit_education():
@@ -180,21 +209,30 @@ def add_job():
         question_3 = request.form["question_3"]
         question_4 = request.form["question_4"]
         question_5 = request.form["question_5"]
+
+        if len(role) > 50:
+            return render_template("error.html", message = "Rooli voi olla max. 50 merkkiä")
+
+        if len(description) > 500:
+            return render_template("error.html", message = "Työpaikan kuvaus voi olla max. 500 merkkiä")     
+
+        if len(question_1) > 100 or len(question_2) > 100 or len(question_3) > 100 or len(question_4) > 100 or len(question_5) > 100:
+            return render_template("error.html", message = "Kysymyksen pituus voi olla max. 100 merkkiä") 
+
         job_id = jobs.add_job(users.user_id(), role, description, beginning, ends, application_period_closes)
         
-        #TODO syötteen oikeellisuuden tarkistus
+        if job_id == False:
+            return render_template("error.html", message = "Työpaikkailmoituksen lisääminen epäonnistui")
         
-        jobs.add_application_form(job_id, question_1, question_2, question_3, question_4, question_5)
-
-        return redirect("/mainpage")
+        if jobs.add_application_form(job_id, question_1, question_2, question_3, question_4, question_5):
+            return redirect("/mainpage")
+        else:
+            return render_template("error.html", message = "Työpaikkailmoituksen kysymysten lisääminen epäonnistui")
 
 @app.route("/job_info/<int:job_id>", methods = ["GET"])
 def show_job(job_id):
 
     info = jobs.get_job_info(job_id)
-
-    print(info)
-
     applied = applications.applied_or_not(users.user_id(), job_id)
 
     if request.method == "GET":
@@ -203,10 +241,7 @@ def show_job(job_id):
 @app.route("/apply/<int:job_id>", methods = ["GET" ,"POST"])
 def apply(job_id):
 
-    #jobs funktiolla get_application_form etsitään kysymykset
-    #kysymykset parametrina html:lle
-    #post metodi lähettää hakemuksen
-
+    users.require_role(0)
     application_form = jobs.get_application_form(job_id)
     form_id = application_form.id
 
@@ -215,34 +250,27 @@ def apply(job_id):
 
     if request.method == "POST":
 
-        #MIKÄ IHME TÄSSÄ MENEE PIELEEN?
-
         answer_1 = request.form["answer_1"]
         answer_2 = request.form["answer_2"]
         answer_3 = request.form["answer_3"]
         answer_4 = request.form["answer_4"]
         answer_5 = request.form["answer_5"]
 
-        applications.send_application(users.user_id(), job_id, form_id, answer_1, answer_2, answer_3, answer_4, answer_5)
 
-    #TODO sivu muuttuisi sellaiseksi että näkyy lähetetty lomake ja sitä voisi muokata
+        if len(answer_1) > 500 or len(answer_2) > 500 or len(answer_3) > 500 or len(answer_4) > 500 or len(answer_5) > 500:
+            return render_template("error.html", message = "Vastauksen pituus voi olla max. 500 merkkiä")
 
-        return redirect("/mainpage")
+        if applications.send_application(users.user_id(), job_id, form_id, answer_1, answer_2, answer_3, answer_4, answer_5):
+
+        #TODO sivu muuttuisi sellaiseksi että näkyy lähetetty lomake ja sitä voisi muokata?
+            return redirect("/mainpage")
+        else:
+            return render_template("error.html", message = "Hakemuksen lähettäminen epäonnistui")
 
 @app.route("/own_applications", methods = ["GET", "POST"])
 def own_applications():
-    #hae omat hakemukset
-    #grouppaa statuksen mukaan?
 
-    #applications.py tiedostoon funktio own_applications
-
-    #listataan tässä kaikki työpaikat joita on jo hakenut tyyliin
-    #rooli
-    #työnantaja
-    #työnhaun status
-    #tarkastele hakemustasi tästä
-
-    #paikkaa ei saatu
+    users.require_role(0)
     not_elected = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 0)
 
     #paikka saatu (tällöin job status automaattisesti 0)
@@ -254,30 +282,21 @@ def own_applications():
     if request.method == "GET":
         return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, not_elected = not_elected)
 
-    print("open applications", open_applications)
-    print("got_elected", got_elected)
-
 @app.route("/application/<int:id>", methods = ["GET", "POST"])
 def show_application(id):
 
-    #näyttää kyseisellä id:llä olevan hakemuksen
     application = applications.show_application(id)
 
-    print(application)
-
-    #lähettää hakemuksen parametrina html:lle
     if request.method == "GET":
         return render_template("show_application.html", application=application, user_role = users.user_role())
 
 
 @app.route("/own_jobs", methods = ["GET", "POST"])
 def own_jobs():
-    #hakee tietyn työnantajan työpaikat statuksen mukaan parametrina html:lle
+    """returns the job advertisements of a given employer"""
 
+    users.require_role(1)
     open_jobs = jobs.get_my_jobs(users.user_id(), None, 1)
-    print(open_jobs)
-
-    #päättyneet haut
     application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
 
     if request.method == "GET":
@@ -286,9 +305,8 @@ def own_jobs():
 
 @app.route("/all_applicants/<int:job_id>", methods = ["GET", "POST"])
 def all_applications(job_id):
-    #hakee tietyn työpaikan kaikki hakemukset parametriksi html:lle
-    #post tarjoaa mahdollisuuden valita tietty työtekijä paikkaan ja ilmoittaa
-    #muille että haku on päättynyt
+    
+    users.require_role(1)
 
     all_applicants = applications.get_all_applicants(job_id)
     job_role = jobs.get_job_role(job_id)
@@ -300,7 +318,6 @@ def all_applications(job_id):
 def select_applicant(application_id):
 
     users.require_role(1)
-    #kutsu applications.py moduulista funktiota tietyn työntekijän valitsemiseen paikkaan
 
     applications.select_applicant(application_id)
 
