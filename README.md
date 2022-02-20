@@ -19,8 +19,8 @@ Lisäksi käyttäjäkohtaisesti on tarjolla seuraavat ominaisuudet:
 
 Sovelluksen tila 20.2.2022:
 
-- Lähes kaikki sovelluksen pääominaisuudet ovat valmiita. Seuraavat ominaisuudet puuttuvat:
-      - Sovelluksen ulkoasu on vielä hyvin puutteellinen ja sisältää pelkkää html -kieltä.
-      - Kysymyslomakkeissa on aina viisi kysymystä. Valmiissa versiossa kysymyksiä voi olla mitä tahansa väliltä 1-5.
-      - CSRF-haavoittuvuutta ei ole korjattu.
-      - Sovellusta ei voi vielä testata Herokussa.
+Lähes kaikki sovelluksen pääominaisuudet ovat valmiita. Seuraavat ominaisuudet puuttuvat:
+- Sovelluksen ulkoasu on vielä hyvin puutteellinen ja sisältää pelkkää html -kieltä.
+- Kysymyslomakkeissa on aina viisi kysymystä. Valmiissa versiossa kysymyksiä voi olla mitä tahansa väliltä 1-5.
+- CSRF-haavoittuvuutta ei ole korjattu.
+- Sovellusta ei voi vielä testata Herokussa.
