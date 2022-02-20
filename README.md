@@ -17,6 +17,10 @@ Lisäksi käyttäjäkohtaisesti on tarjolla seuraavat ominaisuudet:
 - Työntekijä voi selata avoinna olevia työpaikkoja. Hän voi hakea työpaikkaa täyttämällä hakulomakkeen.
 - Työntekijä voi selata hakemiaan työpaikkoja työnhaun statuksen mukaan. Statukset ovat: auki olevat haut, päättyneet haut (saadut työpaikat ja ei saadut työpaikat) ja poistetut ilmoitukset. Jos haku on vielä auki, työntekijä voi muokata hakulomakettaan.
 
-Sovelluksen tila 4.2.2022:
+Sovelluksen tila 20.2.2022:
 
-- Sovellukseen voi rekisteröityä ja kirjautua sisään. Sovelluksessa on etusivu ja profiilisivua on aloitettu. Sovellusta ei voi vielä testata Herokussa.
+- Lähes kaikki sovelluksen pääominaisuudet ovat valmiita. Seuraavat ominaisuudet puuttuvat:
+      - Sovelluksen ulkoasu on vielä hyvin puutteellinen ja sisältää pelkkää html -kieltä.
+      - Kysymyslomakkeissa on aina viisi kysymystä. Valmiissa versiossa kysymyksiä voi olla mitä tahansa väliltä 1-5.
+      - CSRF-haavoittuvuutta ei ole korjattu.
+      - Sovellusta ei voi vielä testata Herokussa.
