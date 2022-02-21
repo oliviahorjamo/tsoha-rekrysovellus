@@ -4,7 +4,7 @@ _**Helsingin yliopiston tietokantasovellus kurssin harjoitustyönä tehty rekryt
 **Sovelluksessa on tällä hetkellä seuraavat ominaisuudet:**
 
 - Käyttäjä voi valita kahden roolin väliltä: työntekijä ja työnantajä.
-- Kumpikin käyttäjärooli voi luoda itselleen profiilin, johon voi kirjautua sisään. Profiiliin voi lisätä profiilitekstin (toteutettu).
+- Kumpikin käyttäjärooli voi luoda itselleen profiilin, johon voi kirjautua sisään. Profiiliin voi lisätä profiilitekstin.
 - Työntekijä voi lisätä tietoa työkokemuksesta ja koulutuksesta. 
 - Työnantaja voi luoda uuden työpaikkailmoituksen. Työpaikkailmoitukseen voi lisätä kuvauksen työpaikasta ja hakulomakkeen. Hakulomakkeen kenttiä voi muokata.
 - Työnantaja näkee, kuinka monta henkilöä on hakenut kyseistä työpaikkaa ja voi tarkastella hakijoiden hakemuksia.
@@ -28,4 +28,5 @@ _**Helsingin yliopiston tietokantasovellus kurssin harjoitustyönä tehty rekryt
 - Käyttäjä voi poistaa tilinsä, jolloin hänen profiilinsa ei ole enää tarkasteltavissa. 
 - Jos työpaikan hakuaika on vielä auki, työntekijä voi muokata lähettämäänsä hakulomaketta.
 
-**HUOM!** Sovellusta ei voi vielä testata Herokussa. Tavoitteena on korjata tämä 21.2.2022.
+Sovellus on testattavissa Herokussa osoitteessa: https://tsoha-rekrysovellus.herokuapp.com/ 
+Sovelluksessa on valmiina kaksi käyttäjää: työntekijä (tunnus:tt_testi ja salasana "jee") ja työnantaja (tunnus: ta_testi ja salasana "jee")
