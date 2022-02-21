@@ -20,7 +20,7 @@ Lisäksi käyttäjäkohtaisesti on tarjolla seuraavat ominaisuudet:
 Sovelluksen tila 20.2.2022:
 
 Lähes kaikki sovelluksen pääominaisuudet ovat valmiita. Seuraavat ominaisuudet puuttuvat:
-- Sovelluksen ulkoasu on vielä hyvin puutteellinen ja sisältää pelkkää html -kieltä.
+- Sovelluksen ulkoasu on vielä hyvin puutteellinen ja sisältää pelkkää html -kieltä. Ulkoasussa on epäloogisuuksia (esim. näyttää profiilissa "Työkokemuksesi" -otsikon, vaikka käyttäjä ei lisännyt työkokemusta). Lomakkeiden vastauskentät ovat liian pieniä. Kaikki nämä asiat tullaan korjaamaan.
 - Kysymyslomakkeissa on aina viisi kysymystä. Valmiissa versiossa kysymyksiä voi olla mitä tahansa väliltä 1-5.
 - CSRF-haavoittuvuutta ei ole korjattu.
-- Sovellusta ei voi vielä testata Herokussa.
+- Sovellusta ei voi vielä testata Herokussa. Tavoitteena on saada tämä korjattua maanantaina 21.2.22.
