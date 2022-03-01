@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+ <h2>Muokkaa työkokemusta</h2>
+
+<form action="/edit_job_experience/{{job.id}}" method ="POST">
+    <p>Työnantaja: </p>
+    <input type="text" value = "{{job.employer}}" name="employer">
+    <br>
+    <p>Roolisi: </p>
+    <input type="text" value = "{{job.role}}"" name="role">
+    <br>
+    <p>Työnkuvaus: </p>
+    <textarea name = "description" cols ="40" rows = "5" >{{job.description}}</textarea>
+    <br>
+    <p>Alkupäivämäärä: </p>
+    <input type="date" value = {{job.beginning}} name="beginning">
+    <br>
+    <p>Loppupäivämäärä: </p>
+    <input type="date" value = {{job.ended}} name="ended">
+    <br>
+    <br>
+    <input type="submit" value = "Tallenna työkokemus" name="Tallenna työkokemus">
+</form>
+
+{% endblock %}

@@ -47,14 +47,23 @@ def add_job_experience(user_id, employer, role, description, beginning, ended):
     except:
         return False
 
-def get_job_experience(user_id):
+def get_all_job_experience(user_id):
     """returns all the job experience of a user (only for employees)"""
-    sql = "SELECT employer, role, description, beginning, ended FROM JOB_EXPERIENCE WHERE user_id=:user_id ORDER BY ended"
+    sql = "SELECT id, employer, role, description, beginning, ended FROM JOB_EXPERIENCE WHERE user_id=:user_id ORDER BY ended"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
 
-def delete_job(user_id):
-    """deletes a given job experience of a user (only for employees)"""
-    pass
+def delete_job_experience(experience_id):
+    print("ollaan työkokemusen poistossa")
+    sql = """DELETE from JOB_EXPERIENCE WHERE id=:id"""
+    db.session.execute(sql, {"id":experience_id})
+    db.session.commit()
+    try:
+        sql = """DELETE from JOB_EXPERIENCE WHERE id=:id"""
+        db.session.execute(sql, {"id":experience_id})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def add_education(user_id, school, level, description, beginning, graduation):
     """adds an education (only for employees)"""
@@ -75,3 +84,8 @@ def get_education(user_id):
     """returns all the education of a user (only for employees)"""
     sql = "SELECT school, level, description, beginning, graduation FROM EDUCATION WHERE user_id=:user_id ORDER BY graduation"
     return db.session.execute(sql, {"user_id":user_id}).fetchall()
+
+def get_job_experience(id):
+    """returns the job experience info with the given id"""
+    sql = """SELECT id, employer, role, description, beginning, ended FROM JOB_EXPERIENCE where id=:id"""
+    return db.session.execute(sql, {"id":id}).fetchone()

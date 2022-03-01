@@ -20,7 +20,7 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
 
-        if not 1 < len(username) <15:
+        if not 0 < len(username) <16:
             return render_template("error.html", message = "Käyttäjänimessä tulee olla 1-15 merkkiä")
 
         password1 = request.form["password1"]
@@ -74,7 +74,7 @@ def profile():
 
     profile_text = profiles.get_profile_text(users.user_id())
 
-    job_experience = profiles.get_job_experience(users.user_id())
+    job_experience = profiles.get_all_job_experience(users.user_id())
 
     education = profiles.get_education(users.user_id())
 
@@ -147,13 +147,43 @@ def add_job_experience():
         else:
             return render_template("error.html", message = "Työkokemuksen päivittäminen epäonnistui")
 
-@app.route("/edit_job_experience", methods = ["GET", "POST"])
-def edit_job_experience():
+@app.route("/edit_job_experience/<int:experience_id>", methods = ["GET", "POST"])
+def edit_job_experience(experience_id):
     """finds the html for editing a job experience and returns it
     calls for functions add_job_experience and delete_job_experience in profiles.py
     when editing a job experience, return the html file with the existing job experience
     then insert the new information and delete the old one"""
-    pass
+
+    job = profiles.get_job_experience(experience_id)
+
+    if request.method == "GET":
+        return render_template("edit_experience.html", job=job)
+    
+    if request.method == "POST":
+
+        employer = request.form["employer"]
+        role = request.form["role"]
+        description = request.form["description"]
+        beginning = request.form["beginning"]
+        ended = request.form["ended"]
+
+        if len(employer) > 50:
+            return render_template("error.html", message = "Työnantajan nimi voi olla max. 50 merkkiä")
+
+        if len(role) > 50:
+            return render_template("error.html", message = "Rooli voi olla max. 50 merkkiä")
+
+        if len(employer) > 500:
+            return render_template("error.html", message = "Työpaikan kuvaus voi olla max. 500 merkkiä")
+
+        if profiles.add_job_experience(users.user_id(), employer, role, description, beginning, ended):
+            if profiles.delete_job_experience(experience_id):
+                return redirect("/profile")
+            else:
+                return render_template("error.html", message = "Vanhan työkokemuksen poistaminen epäonnistui")
+        else:
+            return render_template("error.html", message = "Työkokemuksen päivittäminen epäonnistui")
+
 
 @app.route("/add_education", methods =["GET", "POST"])
 def add_education():
@@ -326,3 +356,11 @@ def select_applicant(application_id):
     jobs.close_job(job_id)
 
     return redirect("/own_jobs")
+
+@app.route("/delete_job_experience/<int:id>", methods = ["GET", "POST"])
+def delete_job_experience(id):
+
+    if profiles.delete_job_experience(id):
+        return redirect("/profile")
+    else:
+        return render_template("error.html", message = "Työkokemuksen poistaminen epäonnistui")
