@@ -7,11 +7,11 @@ def get_my_jobs(user_id, application_status, job_status):
     returns all the jobs the user has applied for if an employee with a given application status and a given job status"""
     if user_role() == 0:
         sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
-        WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:application_status and j.status =:job_status"""
+        WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:application_status and j.status =:job_status and j.visible = 1"""
         return db.session.execute(sql, {"user_id":user_id, "application_status":application_status, "job_status":job_status}).fetchall()
     if user_role() == (1):
         #palauta tietyn työnantajan lisäämät työpaikat
-        sql = """SELECT j.role, j.id, j.description from jobs j where employer_id =:user_id and status =:job_status"""
+        sql = """SELECT j.role, j.id, j.description from jobs j where employer_id =:user_id and status =:job_status and j.visible = 1"""
         return db.session.execute(sql, {"user_id": user_id, "job_status":job_status}).fetchall()
 
 def get_open_jobs():
@@ -40,24 +40,32 @@ def add_job(employer_id, role, description, beginning, ends, closing):
     except:
         return False
 
-def delete_job(user_id, user_role, job_id):
+def delete_job(user_id, job_id):
     """removes a job (only available for the one who added the job"""
-    pass
+    try:
+        sql = """UPDATE JOBS SET visible = 0 WHERE id=:job_id AND employer_id=:user_id"""
+        db.session.execute(sql, {"job_id":job_id, "user_id":user_id})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def add_application_form(job_id, question_1, question_2, question_3, question_4, question_5):
-    sql = """INSERT into APPLICATION_FORMS (question_1, question_2, question_3, question_4, question_5) VALUES (:question_1, 
-    :question_2, :question_3, :question_4, :question_5) RETURNING id"""
+    try: 
+        sql = """INSERT into APPLICATION_FORMS (question_1, question_2, question_3, question_4, question_5) VALUES (:question_1, 
+        :question_2, :question_3, :question_4, :question_5) RETURNING id"""
 
-    print("sql kuselu", sql)
-    form_id = db.session.execute(sql, {"question_1":question_1, "question_2": question_2, "question_3": question_3, 
-    "question_4": question_4, "question_5": question_5}).fetchone()[0]
+        form_id = db.session.execute(sql, {"question_1":question_1, "question_2": question_2, "question_3": question_3, 
+        "question_4": question_4, "question_5": question_5}).fetchone()[0]
+        
+        db.session.commit()
 
-    print("form_id", form_id)
-    db.session.commit()
-
-    sql = """UPDATE JOBS SET form =:form_id WHERE id=:job_id"""
-    db.session.execute(sql, {"form_id":form_id,"job_id":job_id})
-    db.session.commit()
+        sql = """UPDATE JOBS SET form =:form_id WHERE id=:job_id"""
+        db.session.execute(sql, {"form_id":form_id,"job_id":job_id})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 def get_application_form(job_id):
     sql = """SELECT a.id, question_1, question_2, question_3, question_4, question_5 

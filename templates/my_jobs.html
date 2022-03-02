@@ -12,6 +12,7 @@
 <p>Työnantaja: {{job.name}}</p>
 <p>Kuvaus: {{job.description}}</p>
 <p>Voit tarkastella paikkaan  lähetettyjä hakemuksia tästä: <a href="/all_applicants/{{job.id}}">Tarkastele hakemuksia</a></p>
+<p>Voit poistaa työpaikkailmoituksen tästä, jos hakuaika ei ole vielä alkanut: <a href="/delete_job/{{job.id}}">Poista työpaikka</a></p>
 {% endfor %}
 {% else %}
 <p>Et ole vielä lisännyt yhtäkään työpaikkaa</p>

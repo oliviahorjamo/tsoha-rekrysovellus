@@ -278,6 +278,9 @@ def add_job():
         if len(question_1) > 100 or len(question_2) > 100 or len(question_3) > 100 or len(question_4) > 100 or len(question_5) > 100:
             return render_template("error.html", message = "Kysymyksen pituus voi olla max. 100 merkkiä") 
 
+        if question_1 == "-" and question_2 == "-" and question_3 == "-" and question_4 == "-" and question_5 == "-":
+            return render_template("error.html", message = "Lomakkeeseen on lisättävä ainakin yksi kysymys.")
+
         job_id = jobs.add_job(users.user_id(), role, description, beginning, ends, application_period_closes)
         
         if job_id == False:
@@ -401,3 +404,13 @@ def delete_education(education_id):
         return redirect("/profile")
     else:
         return render_template("error.html", message = "Koulutuksen poistaminen epäonnistui")
+
+@app.route("/delete_job/<int:job_id>", methods = ["GET", "POST"])
+def delete_job(job_id):
+
+    users.require_role(1)
+
+    if jobs.delete_job(users.user_id(), job_id):
+        return redirect("/own_jobs")
+    else:
+        return render_template("error.html", message = "Työpaikan poistaminen epäonnistui")
