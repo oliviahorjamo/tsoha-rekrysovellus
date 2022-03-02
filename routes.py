@@ -1,3 +1,4 @@
+from datetime import date
 from app import app
 from flask import render_template, request, redirect
 import users
@@ -7,6 +8,12 @@ import applications
 
 @app.route("/")
 def index():
+
+    jobs_to_close = jobs.find_jobs_to_close(date.today())
+
+    for job in jobs_to_close:
+        jobs.close_job(job[0])
+
     return render_template("index.html")
 
 @app.route("/register", methods=["GET","POST"])

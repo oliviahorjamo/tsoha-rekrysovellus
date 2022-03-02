@@ -81,7 +81,17 @@ def close_job(job_id):
     db.session.execute(sql, {"job_id":job_id})
     db.session.commit()
 
+def close_multiple_jobs(job_id_list):
+    sql = """UPDATE jobs SET status = 0 where id in :job_id_list"""
+    db.session.execute(sql, {"job_id_list":job_id_list})
+    db.session.commit()
+
 def get_job_id(application_id):
     """returns the job id related to a specific application id"""
     sql = """SELECT job_id from applications where id =:application_id"""
     return db.session.execute(sql, {"application_id":application_id}).fetchone()[0]
+
+def find_jobs_to_close(date_today):
+    """returns all jobs whose application period has ended and that are still open and visible"""
+    sql = """SELECT id from JOBS WHERE closing < :date_today AND status = 1 AND visible = 1"""
+    return db.session.execute(sql, {"date_today":date_today}).fetchall()
