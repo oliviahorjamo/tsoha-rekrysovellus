@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+ <h2>Muokkaa koulutusta</h2>
+
+<form action="/edit_education/{{education.id}}" method ="POST">
+    <p>Koulu: </p>
+    <input type="text" value = "{{education.school}}" name="school">
+    <br>
+    <p>Tutkinnon taso: </p>
+    <input type="text" value = "{{education.level}}" name="level">
+    <br>
+    <p>Koulutuksen kuvaus: </p>
+    <textarea name = "description" cols ="40" rows = "5" >{{education.description}}</textarea>
+    <br>
+    <p>Aloituspäivämäärä: </p>
+    <input type="date" value = {{education.beginning}} name="beginning">
+    <br>
+    <p>Valmistumispäivämäärä: </p>
+    <input type="date" value = {{education.graduation}} name="graduation">
+    <br>
+    <br>
+    <input type="submit" value = "Tallenna koulutus" name="Tallenna työkokemus">
+</form>
+
+{% endblock %}

@@ -29,14 +29,16 @@ Lisäksi mahdollisuus poistaa työkokemusta? -> visible sarake job_experience -t
 <p>Työkokemuksesi:</p>
     {% for job in job_experience %}
     <p>-------------------</p>
-    <p>Työnantaja: {{job[0]}} </p>
-    <p>Roolisi: {{job[1]}}</p>
+    <p>Työnantaja: {{job.employer}} </p>
+    <p>Roolisi: {{job.role}}</p>
     <p>Työnkuvaus:</p>
-    {{job[2]}}
-    <p>Alkupäivämäärä: {{job[3]}}</p>
-    <p>Loppupäivämäärä: {{job[4]}}</p> 
+    {{job.description}}
+    <p>Alkupäivämäärä: {{job.beginning}}</p>
+    <p>Loppupäivämäärä: {{job.ended}}</p> 
+    <p> job id {{job.id}}</p>
     <br>
-    Muokkaa työkokemusta <a href="/edit_job_experience">Muokkaa työkokemusta</a>
+    Muokkaa työkokemusta <a href="/edit_job_experience/{{job.id}}">Muokkaa työkokemusta</a>
+    Poista työkokemus <a href="/delete_job_experience/{{job.id}}">Poista työkokemus</a>
     <br>
     <p>-------------------</p>
     {% endfor %}
@@ -44,20 +46,21 @@ Lisäksi mahdollisuus poistaa työkokemusta? -> visible sarake job_experience -t
 <p>Lisää työkokemus tästä: <a href="/add_job_experience">Lisää työkokemus </a></p>
 
 
-
 <p>Koulutuksesi:</p>
 <!-- Pitäisi jotenkin mahdollistaa yksittäisen koulutuksen muokkaaminen
 Lisäksi mahdollisuus poistaa koulutuksia? -> visible sarake education -tauluun?-->
     {% for education in education %}
     <p>-------------------</p>
-    <p>Koulu: {{education[0]}} </p>
-    <p>Koulutuksen taso: {{education[1]}}</p>
+    <p>Koulu: {{education.school}} </p>
+    <p>Koulutuksen taso: {{education.level}}</p>
     <p>Koulutuksen kuvaus:</p>
-    {{education[2]}}
-    <p>Aloituspäivämäärä: {{education[3]}}</p>
-    <p>Valmistumispäivämäärä: {{education[4]}}</p> 
+    {{education.description}}
+    <p>Aloituspäivämäärä: {{education.beginning}}</p>
+    <p>Valmistumispäivämäärä: {{education.graduation}}</p> 
     <br>
-    Muokkaa koulutusta <a href="/edit_education">Muokkaa koulutusta</a>
+    education id {{education.id}}
+    Muokkaa koulutusta <a href="/edit_education/{{education.id}}">Muokkaa koulutusta</a>
+    Poista koulutus <a href="/delete_education/{{education.id}}">Poista koulutus</a>
     <!-- Tää route puuttuu vielä kokonaan, jotenkin pitäisi kyetä antamaan kyseisen koulutuksen tiedot parametrina /edit_education routelle-->
     <br>
     <p>-------------------</p>

@@ -76,7 +76,7 @@ def profile():
 
     job_experience = profiles.get_all_job_experience(users.user_id())
 
-    education = profiles.get_education(users.user_id())
+    education = profiles.get_all_education(users.user_id())
 
     #nyt on haettu profiiliteksti, työkokemus ja koulutus
         #jos ei ole näitä, näytetään vaihtoehdot lisää
@@ -212,11 +212,40 @@ def add_education():
         else:
             return False
 
-@app.route("/edit_education", methods = ["GET", "POST"])
-def edit_education():
+@app.route("/edit_education/<int:id>", methods = ["GET", "POST"])
+def edit_education(id):
     """finds the html for editing education and returns in
     calls for function add_education and delete_education in profiles.py"""
-    pass
+    
+    education = profiles.get_education(id)
+
+    if request.method == "GET":
+        return render_template("edit_education.html", education=education)
+    
+    if request.method == "POST":
+
+        school = request.form["school"]
+        level = request.form["level"]
+        description = request.form["description"]
+        beginning = request.form["beginning"]
+        graduation = request.form["graduation"]
+
+        if len(school) > 50:
+            return render_template("error.html", message = "Koulun nimi voi olla max. 50 merkkiä")
+
+        if len(level) > 50:
+            return render_template("error.html", message = "Koulutuksen taso voi olla max. 50 merkkiä")
+
+        if len(description) > 500:
+            return render_template("error.html", message = "Koulutuksen kuvaus voi olla max. 500 merkkiä")
+
+        if profiles.add_education(users.user_id(), school, level, description, beginning, graduation):
+            if profiles.delete_education(id):
+                return redirect("/profile")
+            else:
+                return render_template("error.html", message = "Vanhan koulutuksen poistaminen epäonnistui")
+        else:
+            return render_template("error.html", message = "Koulutuksen päivittäminen epäonnistui")
 
 @app.route("/add_job", methods = ["GET", "POST"])
 def add_job():
@@ -364,3 +393,11 @@ def delete_job_experience(id):
         return redirect("/profile")
     else:
         return render_template("error.html", message = "Työkokemuksen poistaminen epäonnistui")
+
+@app.route("/delete_education/<int:education_id>", methods = ["GET", "POST"])
+def delete_education(education_id):
+
+    if profiles.delete_education(education_id):
+        return redirect("/profile")
+    else:
+        return render_template("error.html", message = "Koulutuksen poistaminen epäonnistui")
