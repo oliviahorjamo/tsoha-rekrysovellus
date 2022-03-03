@@ -1,20 +1,46 @@
-<p>{{job_id}}</p>
+{% extends "layout.html" %}
+{% block content %}
+
+<h2>Hae työpaikkaa</h2>
 
 <form action="/apply/{{job_id}}" method ="POST">
+    {% if application_form.question_1 != "" %}
     <p>{{application_form.question_1}} </p>
     <input type="text" name="answer_1">
+    {% else %}
+    <input type = "hidden" name = "answer_1" value = "">
+    {% endif %}
     <br>
+    {% if application_form.question_2 != "" %}
     <p>{{application_form.question_2}}</p>
     <input type="text" name="answer_2">
+    {% else %}
+    <input type = "hidden" name = "answer_2" value = "">
+    {% endif %}
     <br>
+    {% if application_form.question_3 != "" %}
     <p>{{application_form.question_3}}</p>
     <input type="text" name="answer_3">
+    {% else %}
+    <input type = "hidden" name = "answer_3" value = "">
+    {% endif %}
     <br>
+    {% if application_form.question_4 != "" %}
     <p>{{application_form.question_4}}</p>
     <input type="text" name="answer_4">
+    {% else %}
+    <input type = "hidden" name = "answer_4" value = "">
+    {% endif %}
     <br>
+    {% if application_form.question_5 != "" %}
     <p>{{application_form.question_5}}</p>
     <input type="text" name="answer_5">
+    {% else %}
+    <input type = "hidden" name = "answer_5" value = "">
+    {% endif %}
     <br>
-    <input type="submit" name="Hae työpaikkaa">
+    <br>
+    <input type="submit" value = "Hae työpaikkaa" name="Hae työpaikkaa">
 </form>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2> Hakulomakkeen tarkastelu </h2>
+
+Lomakkeelle lisäämäsi kysymykset:
+
+{% if form.question_1 != "" %}
+<p>{{form.question_1}}</p>
+{% endif %}
+{% if form.question_2 != "" %}
+<p>{{form.question_2}}</p>
+{% endif %}
+{% if form.question_3 != "" %}
+<p>{{form.question_3}}</p>
+{% endif %}
+{% if form.question_4 != "" %}
+<p>{{form.question_4}}</p>
+{% endif %}
+{% if form.question_5 != "" %}
+<p>{{form.question_5}}</p>
+{% endif %}
+
+<p> Palaa työpaikkailmoitustesi tarkasteluun: <a href = "/own_jobs">Omat työpaikkailmoitukset</a></p>
+
+{% endblock %}

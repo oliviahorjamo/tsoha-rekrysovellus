@@ -276,6 +276,7 @@ def add_job():
         question_4 = request.form["question_4"]
         question_5 = request.form["question_5"]
 
+
         if len(role) > 50:
             return render_template("error.html", message = "Rooli voi olla max. 50 merkkiä")
 
@@ -285,7 +286,7 @@ def add_job():
         if len(question_1) > 100 or len(question_2) > 100 or len(question_3) > 100 or len(question_4) > 100 or len(question_5) > 100:
             return render_template("error.html", message = "Kysymyksen pituus voi olla max. 100 merkkiä") 
 
-        if question_1 == "-" and question_2 == "-" and question_3 == "-" and question_4 == "-" and question_5 == "-":
+        if question_1 == "" and question_2 == "" and question_3 == "" and question_4 == "" and question_5 == "":
             return render_template("error.html", message = "Lomakkeeseen on lisättävä ainakin yksi kysymys.")
 
         job_id = jobs.add_job(users.user_id(), role, description, beginning, ends, application_period_closes)
@@ -421,3 +422,11 @@ def delete_job(job_id):
         return redirect("/own_jobs")
     else:
         return render_template("error.html", message = "Työpaikan poistaminen epäonnistui")
+
+@app.route("/application_form/<int:form_id>", methods = ["GET", "POST"])
+def show_application_form(form_id):
+
+    form = applications.show_application_form(form_id)
+
+    if request.method == "GET":
+        return render_template("show_form.html", form = form)

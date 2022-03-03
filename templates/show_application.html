@@ -7,20 +7,39 @@
 <p> Hakijan {{application.name}} hakemus työpaikkaan {{application.role}}</p>
 {% endif %}
 
+{% if application.question_1 != "-" %}
 {{application.question_1}}
+<br>
 {{application.answer_1}}
+{% endif %}
 <br>
+<br>
+{% if application.question_2 != "" %}
 {{application.question_2}}
+<br>
 {{application.answer_2}}
+{% endif %}
 <br>
+<br>
+{% if application.question_3 != "" %}
 {{application.question_3}}
+<br>
 {{application.answer_3}}
+{% endif %}
 <br>
+<br>
+{% if application.question_4 != "" %}
 {{application.question_4}}
-{{application.answer_4}}
 <br>
+{{application.answer_4}}
+{% endif %}
+<br>
+
+{% if application.question_5 != "" %}
 {{application.question_5}}
+<br>
 {{application.answer_5}}
+{% endif %}
 <br>
 
 {% if user_role == 0 %}

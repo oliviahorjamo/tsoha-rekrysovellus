@@ -15,19 +15,6 @@
 
 from db import db
 
-def get_all_application_forms():
-    """returns all application forms"""
-    pass
-
-def add_application_form(question1, question2, question3, question4, question5, job_id):
-    """adds a new application form into application_form -table,
-    adds a reference to the application form into the jobs -table"""
-    pass
-
-def get_application_form(job_id):
-    """returns the application form of a given job"""
-    pass
-
 def send_application(user_id, job_id, form_id, answer_1, answer_2, answer_3, answer_4, answer_5):
     """sends an application to a given job"""
     try:
@@ -93,3 +80,7 @@ def select_applicant(application_id):
     db.session.execute(sql, {"application_id":application_id})
     db.session.commit()
     
+def show_application_form(form_id):
+    """shows the application form with the given form id"""
+    sql = """SELECT question_1, question_2, question_3, question_4, question_5 FROM application_forms WHERE id=:form_id"""
+    return db.session.execute(sql, {"form_id":form_id}).fetchone()

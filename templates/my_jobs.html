@@ -5,21 +5,35 @@
 
 <h3>Avoimet ilmoitukset:</h3>
 
-{% if own_jobs != None %}
+{% if open_jobs %}
 {% for job in open_jobs %}
 <p>------------</p>
 <p>Rooli: {{job.role}}</p>
 <p>Työnantaja: {{job.name}}</p>
 <p>Kuvaus: {{job.description}}</p>
+<p>Paikkaan on lähetetty {{job.count}} kpl hakemuksia</p>
+<p> Hakulomake tähän paikkaan: <a href ="/application_form/{{job.form}}">Tarkastele lomaketta </a></p>
+<br>
+{% if job.count != 0 %}
 <p>Voit tarkastella paikkaan  lähetettyjä hakemuksia tästä: <a href="/all_applicants/{{job.id}}">Tarkastele hakemuksia</a></p>
-<p>Voit poistaa työpaikkailmoituksen tästä, jos hakuaika ei ole vielä alkanut: <a href="/delete_job/{{job.id}}">Poista työpaikka</a></p>
+{% endif %}
+<p>Voit poistaa työpaikkailmoituksen tästä. Tällöin yhtäkään hakijaa ei valita paikkaan: <a href="/delete_job/{{job.id}}">Poista työpaikka</a></p>
 {% endfor %}
 {% else %}
-<p>Et ole vielä lisännyt yhtäkään työpaikkaa</p>
+<p>Sinulla ei ole yhtäkään työpaikkailmoitusta auki </p>
 {% endif %}
 
 <h3>Suljetut paikat: </h3>
-<p>Tässä listataan paikat, joihin on jo valittu joku?</p>
-<p>Tai sit listataan paikat, missä hakuaika päättynyt</p>
+{% if application_period_ended %}
+{% for job in application_period_ended %}
+<p>Rooli: {{job.role}}</p>
+<p>Paikkaan valittu hakija: {{job.name}} </p>
+<p>---------</p>
+{% endfor %}
+{% else %}
+Et ole lisännyt yhtäkään paikkaa, jonka hakuaika olisi sulkeutunut
+{% endif %}
+
+<p> Palaa etusivulle: <a href = "/mainpage">Etusivu</a></p>
 
 {% endblock %}

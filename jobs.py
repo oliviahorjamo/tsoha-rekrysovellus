@@ -11,8 +11,15 @@ def get_my_jobs(user_id, application_status, job_status):
         return db.session.execute(sql, {"user_id":user_id, "application_status":application_status, "job_status":job_status}).fetchall()
     if user_role() == (1):
         #palauta tietyn työnantajan lisäämät työpaikat
-        sql = """SELECT j.role, j.id, j.description from jobs j where employer_id =:user_id and status =:job_status and j.visible = 1"""
-        return db.session.execute(sql, {"user_id": user_id, "job_status":job_status}).fetchall()
+        if job_status == 1:
+            sql = """SELECT j.role, j.id, j.description, j.form, count(a.id) from jobs j left join applications a on a.job_id=j.id
+            where j.employer_id =:user_id and j.status =:job_status and j.visible = 1 group by j.id"""
+            return db.session.execute(sql, {"user_id": user_id, "job_status":job_status}).fetchall()
+        else:
+            #TODO näytä myös suljetut paikat joihin ei ole valittu yhtäjään hakijaa
+            sql = """SELECT j.role, j.id, j.description, u.name from jobs j, users u, applications a where employer_id =:user_id and j.status=:job_status 
+            and j.visible = 1 and a.user_id = u.id and a.job_id = j.id and a.status = 1"""
+            return db.session.execute(sql, {"user_id":user_id, "job_status":job_status})
 
 def get_open_jobs():
     """returns all the jobs (in the main page)"""
@@ -95,3 +102,8 @@ def find_jobs_to_close(date_today):
     """returns all jobs whose application period has ended and that are still open and visible"""
     sql = """SELECT id from JOBS WHERE closing < :date_today AND status = 1 AND visible = 1"""
     return db.session.execute(sql, {"date_today":date_today}).fetchall()
+
+def count_applicants(job_id):
+    """returns the number of applicants that have applied for a given job"""
+    sql = """SELECT COUNT(id) FROM APPLICATIONS where job_id=:job_id"""
+    return db.session.execute(sql, {"job_id":job_id})
