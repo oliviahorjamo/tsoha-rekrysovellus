@@ -10,6 +10,8 @@ jossa jokainen item on linkki kyseisen työpaikan sivulle
 
 työpaikan sivulla koko kuvaus ja mahdollisuus hakea-->
 
+{% if open_jobs %}
+
 {% for job in open_jobs %}
     <p>---------</p>
     <p>Rooli: {{job[2]}}</p>
@@ -17,6 +19,12 @@ työpaikan sivulla koko kuvaus ja mahdollisuus hakea-->
     <p><a href="/job_info/{{ job[1] }}">Näytä tiedot: {{job[2]}}</a></p>
     <p>----------</p>
 {% endfor %}
+
+{% else %}
+
+Ei auki olevia paikkoja.
+
+{% endif %}
 
 
 <p>Voit tarkastella omaa profiiliasi tästä: <a href ="/profile"> Oma profiilisi </a></p>

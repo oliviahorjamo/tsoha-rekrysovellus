@@ -4,7 +4,7 @@
 <h2>Hakemasi työpaikat: </h2>
 
 <!--TODO, jos ei yhtään työpaikkaa, tee käyttöliittymästä järkevämpi-->
-<h3>Saadut työpaikat:</h3>
+<h3>Saadut työpaikat: {{count_got_elected}} kpl</h3>
 
 {% if not got_elected %}
 <p>Ei näytettäviä työpaikkoja</p>
@@ -17,7 +17,7 @@
 {% endfor %}
 {% endif %}
 
-<h3>Haku auki: </h3>
+<h3>Haku auki: {{count_open_applications}} kpl</h3>
 {% if not open_applications %}
 <p>Et ole hakenut yhtäkään paikkaa, jonka hakuaika olisi vielä auki</p>
 {% else %}
@@ -29,7 +29,7 @@
 {% endfor %}
 {% endif %}
 
-<h3>Haku päättynyt: </h3>
+<h3>Haku päättynyt: {{count_not_elected}} kpl</h3>
 {% if not not_elected %}
 <p>Ei näytettäviä hakemuksia</p>
 {% else %}

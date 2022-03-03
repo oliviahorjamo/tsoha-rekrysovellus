@@ -21,6 +21,7 @@
     <br>
     <br>
     <input type="submit" value = "Tallenna työkokemus" name="Tallenna työkokemus">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% endblock %}

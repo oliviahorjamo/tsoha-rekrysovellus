@@ -53,6 +53,7 @@ vain töihin eikä hakemuksiin?) joka lisää hakulomakkeen tietokantaan ja viit
     <br>
     <br>
     <input type="submit" value = "Lisää työpaikkailmoitus" name="Lisää työpaikkailmoitus">
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 {% else %}

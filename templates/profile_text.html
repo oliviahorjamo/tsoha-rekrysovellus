@@ -7,6 +7,7 @@
 <textarea name = "profile_text" cols ="40" rows = "5" >{{profile_text}}</textarea>
 <br>
 <input type="submit" name ="Lisää profiiliteksti">
+<input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
 
