@@ -1,12 +1,24 @@
-{% extends "layout.html" %}
-{%block content %}
 
-<h2>Kirjaudu sisään</h2>
+
+{% extends "layout.html" %}
+{% block content %}
+
+<div class = "info_text">
+    <p> Rekrytointisovellus on Flask-pohjainen sovellus, jossa työntekijät voivat
+        luoda itselleen työnhakuprofiilin ja hakea työpaikkoja. Työnantajat taas voivat
+        luoda työnantajaprofiilin, luoda uusia työpaikkailmoituksia ja valita työntekijöitä
+        avoimiin paikkoihin.
+    </p>
+</div>
+
+<h2>Kirjaudu sisään tai rekisteröidy</h2>
 
 <p> Tämä sovellus vaatii sisään kirjautumisen tai rekisteröitymisen. </p>
 <br>
+<div class = "login">
 Jos sinulle on jo tunnus, kirjaudu sisään <a href="/login">tästä</a>
 <br>
 Jos sinulla ei ole vielä tunnusta, voit rekisteröityä tästä <a href="/register">tästä</a>
+</div>
 <br>
 {% endblock %}
