@@ -100,7 +100,7 @@ def profile():
     #luo eka pohja profiilille html:lla
 
     if request.method == "GET":
-        return render_template("profile.html", profile_text=profile_text, job_experience=job_experience, education=education)
+        return render_template("pown_rofile.html", profile_text=profile_text, job_experience=job_experience, education=education)
 
 
 @app.route("/edit_profile", methods = ["GET", "POST"])
@@ -350,7 +350,8 @@ def own_applications():
     open_applications = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 1)
 
     if request.method == "GET":
-        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, not_elected = not_elected)
+        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, not_elected = not_elected,
+        count_open_applications = len(open_applications), count_got_elected = len(got_elected), count_not_elected = len(not_elected))
 
 @app.route("/application/<int:id>", methods = ["GET", "POST"])
 def show_application(id):
@@ -379,6 +380,7 @@ def all_applications(job_id):
     users.require_role(1)
 
     all_applicants = applications.get_all_applicants(job_id)
+
     job_role = jobs.get_job_role(job_id)
 
     if request.method == "GET":
@@ -430,3 +432,18 @@ def show_application_form(form_id):
 
     if request.method == "GET":
         return render_template("show_form.html", form = form)
+
+@app.route("/show_profile/<int:applicant_id>/<int:job_id>", methods = ["GET", "POST"])
+def show_profile(applicant_id, job_id):
+    """shows the profile of the applicant with the given username"""
+
+    name = users.get_name(applicant_id)
+
+    profile_text = profiles.get_profile_text(applicant_id)
+
+    job_experience = profiles.get_all_job_experience(applicant_id)
+
+    education = profiles.get_all_education(applicant_id)
+
+    if request.method == "GET":
+        return render_template("show_profile.html", name = name, profile_text = profile_text, job_experience = job_experience, education = education, job_id = job_id)

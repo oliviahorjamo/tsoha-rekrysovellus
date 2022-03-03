@@ -5,8 +5,9 @@
 
 <ul>
 {% for applicant in all_applicants %}
-<li><p>{{applicant.name}} <a href = "/application/{{applicant.id}}">Tarkastele hakijan hakemusta</a></p></li>
+<li><p><a href ="/show_profile/{{applicant.applicant_id}}/{{job_id}}">{{applicant.name}}</a> <a href = "/application/{{applicant.application_id}}">Tarkastele hakijan hakemusta</a></p></li>
 {% endfor %}
 </ul>
 
+<p>Palaa tarkastelemaan omia työpaikkailmoituksia: <a href = "/own_jobs">Omat työpaikkailmoitukset </a></p>
 {% endblock %}

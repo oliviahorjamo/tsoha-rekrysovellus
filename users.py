@@ -56,3 +56,7 @@ def check_csrf():
     if session["csrf_token"] != request.form["csrf_token"]:
         abort(403)
 
+def get_name(id):
+    sql = """SELECT name FROM USERS where id =:id"""
+    return db.session.execute(sql, {"id":id}).fetchone()[0]
+

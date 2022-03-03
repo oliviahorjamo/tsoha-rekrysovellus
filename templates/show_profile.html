@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<h2> Käyttäjän <b> {{name}} </b> profiili</h2>
+
+<p>Nimi: <b> {{name }} </b></p>
+
+{% if profile_text %}
+<p>Profiiliteksti:<br>
+{{profile_text}}</p>
+{% endif %}
+
+<p>Työkokemus:</p>
+    {% for job in job_experience %}
+    <p>-------------------</p>
+    <p>Työnantaja: {{job.employer}} </p>
+    <p>Roolisi: {{job.role}}</p>
+    <p>Työnkuvaus:</p>
+    {{job.description}}
+    <p>Alkupäivämäärä: {{job.beginning}}</p>
+    <p>Loppupäivämäärä: {{job.ended}}</p> 
+    <br>
+    <p>-------------------</p>
+    {% endfor %}
+
+
+<p>Koulutus:</p>
+<!-- Pitäisi jotenkin mahdollistaa yksittäisen koulutuksen muokkaaminen
+Lisäksi mahdollisuus poistaa koulutuksia? -> visible sarake education -tauluun?-->
+    {% for education in education %}
+    <p>-------------------</p>
+    <p>Koulu: {{education.school}} </p>
+    <p>Koulutuksen taso: {{education.level}}</p>
+    <p>Koulutuksen kuvaus:</p>
+    {{education.description}}
+    <p>Aloituspäivämäärä: {{education.beginning}}</p>
+    <p>Valmistumispäivämäärä: {{education.graduation}}</p> 
+    <br>
+    <br>
+    <p>-------------------</p>
+    {% endfor %}
+
+<p>Palaa takaisin kyseiseen työpaikkaan lähetettyjä hakemuksia </p><a href="/all_applicants/{{job_id}}">Kaikki hakemukset</a>
+
+{% endblock %}

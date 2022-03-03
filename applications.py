@@ -32,15 +32,6 @@ def delete_application(user_id, application_id):
     """deletes a sent application if the job is still open"""
     pass
 
-def get_all_applications(job_id):
-    """lists all applications into a job if the user has
-    added the job"""
-    sql = """select a.id, j.role, u.name, f.question_1, f.question_2, f.question_3, f.question_4,
-    f.question_5, a.answer_1, a.answer_2, a.answer_3, a.answer_4, a.answer_5,
-    a.sent_at from applications a, users u, application_forms f, jobs j where a.job_id =:job_id and
-    j.id =:job_id and a.form_id = f.id and a.user_id = u.id"""
-    return db.session.execute(sql, {"job_id":job_id}).fetchall()
-
 def get_application_status(application_id, user_id):
     """returns the status of an application if
     the application is sent by the user"""
@@ -69,7 +60,7 @@ def show_application(id):
     return db.session.execute(sql, {"id":id}).fetchone()
 
 def get_all_applicants(job_id):
-    sql = """select u.name, a.id from applications a, users u where a.job_id =:job_id and
+    sql = """select u.name, u.id as applicant_id, a.id as application_id from applications a, users u where a.job_id =:job_id and
     a.user_id = u.id"""
     return db.session.execute(sql, {"job_id":job_id}).fetchall()
 
