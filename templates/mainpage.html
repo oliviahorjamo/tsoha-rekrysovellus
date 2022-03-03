@@ -1,23 +1,46 @@
 {% extends "layout.html" %}
 {% block content %} 
 
+<nav>
+    <ul>
+        <li><a href ="/own_profile"> Oma profiilisi </a></li>
+        {% if session.user_role == 0 %}
+        <li><a href="/own_applications">Hakemasi paikat </a></li>
+        {% endif %}
+
+        {% if session.user_role == 1 %}
+        <li><a href="/own_jobs">Omat työpaikkailmoituksesi</a></li>
+        <li><a href="/add_job">Lisää uusi työpaikkailmoitus</a></li>
+        {% endif %}
+        <li><a href="/logout"> Kirjaudu ulos</a></li>
+    </ul>
+</nav>
+
 <h2> Etusivu </h2>
 
 <h3>Kaikki avoimet työpaikat</h3>
-<!--Tähän kohtaan for loop parametrina annetuista kaikista töistä
-listaa kaikista töistä tyyliin nimi ja työnantaja listana
-jossa jokainen item on linkki kyseisen työpaikan sivulle
-
-työpaikan sivulla koko kuvaus ja mahdollisuus hakea-->
 
 {% if open_jobs %}
 
 {% for job in open_jobs %}
-    <p>---------</p>
-    <p>Rooli: {{job[2]}}</p>
-    <p>Työnantaja: {{job[0]}}</p>
-    <p><a href="/job_info/{{ job[1] }}">Näytä tiedot: {{job[2]}}</a></p>
-    <p>----------</p>
+<div class = "content_box">
+    <p>Rooli: {{job.role}}</p>
+    <p>Työnantaja: {{job.employer_name}}</p>
+    <p>Työpaikan kuvaus: {{job.description}}</p>
+    <nav>
+        <ul>
+            <li>Työ alkaa: {{job.beginning}}</li>
+            <li>Työ päättyy: {{job.ends}}</li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>Haku on auennut: {{job.opened}}</li>
+            <li>Haku päättyy: {{job.closing}}</li>
+        </ul>
+    </nav>
+    <a href="/apply/{{job.id}}">Hae paikkaa </a>
+</div>
 {% endfor %}
 
 {% else %}
@@ -26,18 +49,5 @@ Ei auki olevia paikkoja.
 
 {% endif %}
 
-
-<p>Voit tarkastella omaa profiiliasi tästä: <a href ="/own_profile"> Oma profiilisi </a></p>
-
-{% if session.user_role == 0 %}
-<p>Voit selata hakemiasi työpaikkoja tästä: <a href="/own_applications">Hakemasi paikat </a></p>
-{% endif %}
-
-{% if session.user_role == 1 %}
-<p>Voit tarkastella ja muokata omia työpaikkailmoituksiasi tästä: <a href="/own_jobs">Omat ilmoituksesi</a> </a></p>
-<p>Voit lisätä uuden ilmoituksen tästä: <a href="/add_job">Lisää uusi työpaikkailmoitus</a></p>
-{% endif %}
-
-Olet kirjautunut sisään nimellä <b> {{session.user_name }} </b>. <a href="/logout"> Kirjaudu ulos</a>
 
 {% endblock %}

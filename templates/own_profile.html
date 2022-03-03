@@ -3,18 +3,20 @@
 
 <h2> Käyttäjän <b> {{session.user_name }} </b> profiili</h2>
 
-<p>Nimi: <b> {{session.user_name }} </b></p>
+<div class = "content_box">
+    <p>Nimi: <b> {{session.user_name }} </b></p>
+</div>
 
-{% if profile_text %}
-<p>Profiiliteksti:<br>
-{{profile_text}}</p>
-
-<p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
-
-{% else %}
-<p>Lisää profiiliteksti tästä: <a href="/edit_profile">Lisää profiiliteksti </a></p>
-
-{% endif %}
+<div class = "content_box">
+    {% if profile_text %}
+    <p>Profiiliteksti:
+    <br>
+    {{profile_text}}</p>
+    <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
+    {% else %}
+    <p>Lisää profiiliteksti tästä: <a href="/edit_profile">Lisää profiiliteksti </a></p>
+    {% endif %}
+</div>
 
 {% if session.user_role == 0 %}
 <p>Työkokemuksesi:</p>

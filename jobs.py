@@ -23,7 +23,7 @@ def get_my_jobs(user_id, application_status, job_status):
 
 def get_open_jobs():
     """returns all the jobs (in the main page)"""
-    sql = """SELECT u.name, j.id, j.role, j.description FROM USERS u, JOBS j WHERE
+    sql = """SELECT u.name as employer_name, j.id, j.role, j.description, j.beginning, j.ends, j.opened, j.closing FROM USERS u, JOBS j WHERE
     u.id = j.employer_id AND visible = 1 AND j.status = 1"""
     return db.session.execute(sql).fetchall()
 

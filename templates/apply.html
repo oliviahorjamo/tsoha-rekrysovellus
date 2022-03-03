@@ -6,42 +6,43 @@
 <form action="/apply/{{job_id}}" method ="POST">
     {% if application_form.question_1 != "" %}
     <p>{{application_form.question_1}} </p>
-    <input type="text" name="answer_1">
+    <textarea name = "answer_1" cols ="40" rows = "5" ></textarea>
     {% else %}
     <input type = "hidden" name = "answer_1" value = "">
     {% endif %}
     <br>
     {% if application_form.question_2 != "" %}
     <p>{{application_form.question_2}}</p>
-    <input type="text" name="answer_2">
+    <textarea name = "answer_2" cols ="40" rows = "5" ></textarea>
     {% else %}
     <input type = "hidden" name = "answer_2" value = "">
     {% endif %}
     <br>
     {% if application_form.question_3 != "" %}
     <p>{{application_form.question_3}}</p>
-    <input type="text" name="answer_3">
+    <textarea name = "answer_3" cols ="40" rows = "5" ></textarea>
     {% else %}
     <input type = "hidden" name = "answer_3" value = "">
     {% endif %}
     <br>
     {% if application_form.question_4 != "" %}
     <p>{{application_form.question_4}}</p>
-    <input type="text" name="answer_4">
+    <textarea name = "answer_4" cols ="40" rows = "5" ></textarea>
     {% else %}
     <input type = "hidden" name = "answer_4" value = "">
     {% endif %}
     <br>
     {% if application_form.question_5 != "" %}
     <p>{{application_form.question_5}}</p>
-    <input type="text" name="answer_5">
+    <textarea name = "answer_5" cols ="40" rows = "5" ></textarea>
     {% else %}
     <input type = "hidden" name = "answer_5" value = "">
     {% endif %}
     <br>
-    <br>
     <input type="submit" value = "Hae työpaikkaa" name="Hae työpaikkaa">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+<br>
+<a href = "/mainpage">Palaa etusivulle</a>
 
 {% endblock %}

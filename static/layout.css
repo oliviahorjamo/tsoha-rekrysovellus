@@ -4,17 +4,20 @@
     max-width: 45em;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #54737d
+    color: #223338
 }
 
 .info_text {
     margin: auto;
-    color: #54737d;
-    max-width: 30em
+    color: #223338;
+    max-width: 45em
 }
 
 .login {
     background: #5b97ab;
+    padding: .5em 1em;
+    display: block;
+    margin: .5em
 }
 
 body {
@@ -23,4 +26,16 @@ body {
     max-width: 45em;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
+    color: #223338;
+    padding: .5em
+}
+
+nav li {
+    display: inline-block;    
+}
+
+.content_box {
+    background-color: white;
+    text-align: left;
+    padding: .5em .5em
 }
