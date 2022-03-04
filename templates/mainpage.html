@@ -29,6 +29,7 @@
         hakenut. Hakemiasi paikkoja voit tarkastella ylävalikosta löytyvästä valikosta.
     </p>
     {% endif %}
+</div>
 
 <h3>Kaikki avoimet työpaikat</h3>
 
@@ -37,32 +38,29 @@
 {% for job in open_jobs %}
 <div class = "content_box">
     <p>Rooli: {{job.role}}</p>
-    <p>Työnantaja:</p><a href = "/show_profile_employer/{{job.employer_id}}">{{job.employer_name}}</a>
+    <p>Työnantaja: <a href = "/show_profile_employer/{{job.employer_id}}">{{job.employer_name}}</a></p>
     <p>Työpaikan kuvaus: {{job.description}}</p>
-    <nav>
-        <ul>
-            <li>Työ alkaa: {{job.beginning}}</li>
-            <li>Työ päättyy: {{job.ends}}</li>
-        </ul>
-    </nav>
-    <nav>
-        <ul>
-            <li>Haku on auennut: {{job.opened}}</li>
-            <li>Haku päättyy: {{job.closing}}</li>
-        </ul>
-    </nav>
+    <p>Työ alkaa: {{job.beginning}}</p>
+    <p>Työ päättyy: {{job.ends}}</p>
+    <br>
+    <p>Haku on auennut: {{job.opened}} </p>
+    <p>Haku päättyy: {{job.closing}}</p>
     {% if session.user_role == 0 %}
+    <br>
     <a href="/apply/{{job.id}}">Hae paikkaa </a>
     {% endif %}
 </div>
 {% endfor %}
 
 {% else %}
-{% if session.user_role == 0 %}
-Ei auki olevia paikkoja, joihin et ole vielä hakenut.
-{% else %}
-Ei auki olevia paikkoja.
-{% endif %}
+<div class = "content_box_without_content">
+    {% if session.user_role == 0 %}
+    Ei auki olevia paikkoja, joihin et ole vielä hakenut.
+    {% else %}
+    Ei auki olevia paikkoja.
+    {% endif %}
+</div>
+
 {% endif %}
 
 {% endblock %}

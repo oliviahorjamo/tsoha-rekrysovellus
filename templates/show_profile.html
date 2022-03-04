@@ -3,16 +3,24 @@
 
 <h2> Käyttäjän <b> {{name}} </b> profiili</h2>
 
-<p>Nimi: <b> {{name }} </b></p>
-
+<h3>Profiiliteksti:</h3>
 {% if profile_text %}
-<p>Profiiliteksti:<br>
-{{profile_text}}</p>
+<div class = "content_box">
+    <p> {{profile_text}} </p>
+</div>
+
+{% else %}
+<div class="content_box_without_content">
+    <p>Käyttäjä ei ole vielä lisännyt profiilitekstiä. </p>
+</div>
 {% endif %}
 
-<p>Työkokemus:</p>
-    {% for job in job_experience %}
-    <p>-------------------</p>
+
+{% if applicant %}
+<h3>Työkokemus:</h3>
+
+{% for job in job_experience %}
+<div class = "content_box">
     <p>Työnantaja: {{job.employer}} </p>
     <p>Roolisi: {{job.role}}</p>
     <p>Työnkuvaus:</p>
@@ -20,28 +28,44 @@
     <p>Alkupäivämäärä: {{job.beginning}}</p>
     <p>Loppupäivämäärä: {{job.ended}}</p> 
     <br>
-    <p>-------------------</p>
-    {% endfor %}
+</div>
+{% endfor %}
+
+{% if not job_experience %}
+<div class = "content_box_without_content">
+    <p>Käyttäjä ei ole vielä lisännyt tietoa työkokemuksestaan. </p>
+</div>
+{% endif %}
+
+{% endif %}
 
 
-<p>Koulutus:</p>
-<!-- Pitäisi jotenkin mahdollistaa yksittäisen koulutuksen muokkaaminen
-Lisäksi mahdollisuus poistaa koulutuksia? -> visible sarake education -tauluun?-->
-    {% for education in education %}
-    <p>-------------------</p>
+{% if applicant %}
+
+<h3>Koulutus:</h3>
+
+{% for education in education %}
+<div class = "content_box">
     <p>Koulu: {{education.school}} </p>
     <p>Koulutuksen taso: {{education.level}}</p>
     <p>Koulutuksen kuvaus:</p>
     {{education.description}}
     <p>Aloituspäivämäärä: {{education.beginning}}</p>
     <p>Valmistumispäivämäärä: {{education.graduation}}</p> 
-    <br>
-    <br>
-    <p>-------------------</p>
-    {% endfor %}
+</div>
+{% endfor %}
 
-{% if applicant == True %}
-<p>Palaa takaisin kyseiseen työpaikkaan lähetettyjä hakemuksia </p><a href="/all_applicants/{{job_id}}">Kaikki hakemukset</a>
+{% if not education %}
+<div class = "content_box_without_content">
+    <p>Käyttäjä ei ole vielä lisännyt tietoa koulutuksestaan.</p>
+</div>
+{% endif %}
+
+{% endif %}
+
+
+{% if applicant %}
+<p>Palaa takaisin selaamaan kyseiseen työpaikkaan lähetettyjä hakemuksia </p><a href="/all_applicants/{{job_id}}">Kaikki hakemukset</a>
 {% else %}
 <p>Palaa takaisin etusivulle: </p> <a href = "/mainpage"> Etusivu</a>
 {% endif %}

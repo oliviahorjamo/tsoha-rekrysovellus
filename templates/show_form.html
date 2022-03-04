@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h2> Hakulomakkeen tarkastelu </h2>
+<h2> Lisäämäsi hakulomake paikkaan: {{form.role}} </h2>
 
 Lomakkeelle lisäämäsi kysymykset:
 
@@ -21,6 +21,7 @@ Lomakkeelle lisäämäsi kysymykset:
 <p>{{form.question_5}}</p>
 {% endif %}
 
+<br>
 <p> Palaa työpaikkailmoitustesi tarkasteluun: <a href = "/own_jobs">Omat työpaikkailmoitukset</a></p>
 
 {% endblock %}

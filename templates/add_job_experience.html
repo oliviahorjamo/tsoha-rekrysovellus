@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <h2>Lisää työkokemus</h2>
+
+<div class = "info_text">
+    <p>Tällä sivulla voit lisätä uuden tiedon työkokemuksesta. Lomakkeen kaikkiin kohtiin on vastattava. </p>
+</div>
 
 <form action="/add_job_experience" method ="POST">
     <p>Työnantaja: </p>
@@ -18,8 +23,11 @@
     <p>Loppupäivämäärä: </p>
     <input type="date" name="ended">
     <br>
-    <input type="submit" name="Lisää työkokemus">
+    <br>
+    <input type="submit" value = "Lisää työkokemus" name="Lisää työkokemus">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+
+<p>Palaa tarkastelemaan profiiliasi: <a href = "/own_profile">Oma profiilisi </a></p>
 
 {% endblock %}

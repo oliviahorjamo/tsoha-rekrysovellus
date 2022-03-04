@@ -3,25 +3,38 @@
 
 <h2> Käyttäjän <b> {{session.user_name }} </b> profiili</h2>
 
+{% if session.user_role == 0 %}
+<div class = "info_text">
+    <p> Tällä sivulla voit tarkastella ja muokata omaa profiiliasi. Profiilisi on nähtävillä
+        niille työnantajille, joiden lisäämää työpaikkaa olet hakenut.
+    </p>
+</div>
+{% else %}
+<div class = "info_text">
+    <p> Tällä sivulla voit tarkastella ja muokata omaa profiiliasi. Profiilisi on nähtävillä
+        lisäämiesi työpaikkailmoitusten yhteydessä.
+    </p>
+</div>
+{% endif %}
+
+<h3>Profiiliteksti:</h3>
+{% if profile_text %}
 <div class = "content_box">
-    <p>Nimi: <b> {{session.user_name }} </b></p>
+    <p> {{profile_text}} </p>
+    <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
 </div>
 
-<div class = "content_box">
-    {% if profile_text %}
-    <p>Profiiliteksti:
-    <br>
-    {{profile_text}}</p>
-    <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
-    {% else %}
+{% else %}
+<div class="content_box_without_content">
     <p>Lisää profiiliteksti tästä: <a href="/edit_profile">Lisää profiiliteksti </a></p>
-    {% endif %}
 </div>
+{% endif %}
 
 {% if session.user_role == 0 %}
-<p>Työkokemuksesi:</p>
-    {% for job in job_experience %}
-    <p>-------------------</p>
+<h3>Työkokemuksesi:</h3>
+
+{% for job in job_experience %}
+<div class = "content_box">
     <p>Työnantaja: {{job.employer}} </p>
     <p>Roolisi: {{job.role}}</p>
     <p>Työnkuvaus:</p>
@@ -29,19 +42,26 @@
     <p>Alkupäivämäärä: {{job.beginning}}</p>
     <p>Loppupäivämäärä: {{job.ended}}</p> 
     <br>
-    Muokkaa työkokemusta <a href="/edit_job_experience/{{job.id}}">Muokkaa työkokemusta</a>
-    Poista työkokemus <a href="/delete_job_experience/{{job.id}}">Poista työkokemus</a>
-    <br>
-    <p>-------------------</p>
-    {% endfor %}
+    <p>Muokkaa työkokemusta <a href="/edit_job_experience/{{job.id}}">Muokkaa työkokemusta</a></p>
+    <p>Poista työkokemus <a href="/delete_job_experience/{{job.id}}">Poista työkokemus</a></p>
+</div>
+{% endfor %}
 
-<p>Lisää työkokemus tästä: <a href="/add_job_experience">Lisää työkokemus </a></p>
+{% if not job_experience %}
+<div class = "content_box_without_content">
+    <p>Lisää uusi työkokemus tästä: <a href="/add_job_experience">Lisää työkokemus </a></p>
+</div>
+{% else %}
+<p>Lisää uusi työkokemus tästä: <a href="/add_job_experience">Lisää työkokemus </a></p>
+{% endif %}
 {% endif %}
 
+
 {% if session.user_role == 0 %}
-<p>Koulutuksesi:</p>
-    {% for education in education %}
-    <p>-------------------</p>
+<h3>Koulutuksesi:</h3>
+
+{% for education in education %}
+<div class = "content_box">
     <p>Koulu: {{education.school}} </p>
     <p>Koulutuksen taso: {{education.level}}</p>
     <p>Koulutuksen kuvaus:</p>
@@ -49,16 +69,22 @@
     <p>Aloituspäivämäärä: {{education.beginning}}</p>
     <p>Valmistumispäivämäärä: {{education.graduation}}</p> 
     <br>
-    Muokkaa koulutusta <a href="/edit_education/{{education.id}}">Muokkaa koulutusta</a>
-    Poista koulutus <a href="/delete_education/{{education.id}}">Poista koulutus</a>
+    <p>Muokkaa koulutusta <a href="/edit_education/{{education.id}}">Muokkaa koulutusta</a></p>
+    <p>Poista koulutus <a href="/delete_education/{{education.id}}">Poista koulutus</a></p>
     <br>
-    <p>-------------------</p>
-    {% endfor %}
+</div>
+{% endfor %}
 
-<p>Lisää koulutus tästä: <a href="/add_education">Lisää koulutus </a></p>
+{% if not education %}
+<div class = "content_box_without_content">
+    <p>Lisää uusi koulutus tästä: <a href="/add_education">Lisää koulutus </a></p>
+</div>
+{% else %}
+<p>Lisää uusi koulutus tästä: <a href="/add_education">Lisää koulutus </a></p>
+{% endif %}
 {% endif %}
 
-
+<br>
 <a href="/mainpage">Palaa etusivulle</a>
 
 {% endblock %}

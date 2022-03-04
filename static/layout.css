@@ -31,11 +31,35 @@ body {
 }
 
 nav li {
-    display: inline-block;    
+    display: inline-block;
+    padding: 0 .5em
 }
 
 .content_box {
     background-color: white;
     text-align: left;
-    padding: .5em .5em
+    margin: .5em;
+    padding: .1em .5em
+}
+
+ul {
+    margin: 0;
+    padding: 0 0;
+    margin-inline-start: 1em;
+    text-align: center
+}
+
+.content_box_without_content {
+    background-color: white;
+    text-align: center;
+    margin: .5em;
+    padding: .1em .5em .1em
+}
+
+.applicants {
+    text-align: center;
+}
+
+li {
+    text-align: center
 }

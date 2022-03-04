@@ -1,4 +1,5 @@
 from datetime import date
+from email.mime import application
 from app import app
 from flask import render_template, request, redirect
 import users
@@ -409,6 +410,8 @@ def own_jobs():
 
     open_jobs = jobs.get_my_jobs(users.user_id(), None, 1)
     application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
+
+    print(application_period_ended)
 
     if request.method == "GET":
         return render_template("own_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)

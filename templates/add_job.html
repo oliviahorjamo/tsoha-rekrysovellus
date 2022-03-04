@@ -13,14 +13,19 @@ vain töihin eikä hakemuksiin?) joka lisää hakulomakkeen tietokantaan ja viit
 
 <h2>Lisää työpaikka</h2>
 
-{% if session.user_role == 1 %}
+<div class = "info_text">
+    <p> Tällä sivulla voit lisätä uuden työpaikkailmoituksen. Kaikkiin lomakkeen kohtiin on vastattava. 
+        Työpaikka aukeaa haettavaksi heti kun julkaiset sen. Työpaikkailmoitus sulkeutuu automaattisesti hakuajan päätyttyä. </p>
+</div>
+
+<h3>Lisää työpaikkaan liittyvät tiedot: </h3>
 
 <form action="/add_job" method ="POST">
     <p>Rooli: </p>
     <input type="text" name="role">
     <br>
-    <p>Työnkuvaus: </p>
-    <input type="text" name="description">
+    <p>Työn kuvaus: </p>
+    <textarea name = "description" rows="5" cols = "40"></textarea>
     <br>
     <p>Alkupäivämäärä: </p>
     <input type="date" name="beginning">
@@ -31,10 +36,10 @@ vain töihin eikä hakemuksiin?) joka lisää hakulomakkeen tietokantaan ja viit
     <p>Haku loppuu: </p>
     <input type ="date" name="application_period_closes">
     <br>
-    <p>Lisää hakulomakkeen kysymykset: </p>
+    <h3>Lisää hakulomakkeen kysymykset: </h3>
     <br>
-    Voit jättää kysymyksen tyhjäksi, jolloin sitä ei näytetä hakulomakkeessa.
-    Lomakkeeseen on lisättävä ainakin yksi kysymys.
+    <p>Voit jättää kysymyksen tyhjäksi, jolloin sitä ei näytetä hakulomakkeessa.
+        Lomakkeeseen on lisättävä ainakin yksi kysymys.</p>
     <br>
     <p>Kysymys 1: </p>
     <input type="text" name="question_1">
@@ -56,10 +61,6 @@ vain töihin eikä hakemuksiin?) joka lisää hakulomakkeen tietokantaan ja viit
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
-{% else %}
-<p>Työntakijä roolissa ei voi lisätä työpaikkoja.</p>
-
-{% endif %}
-
+<br>
 <a href="/mainpage">Palaa etusivulle</a>
 {% endblock %}

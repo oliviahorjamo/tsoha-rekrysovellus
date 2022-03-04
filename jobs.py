@@ -6,20 +6,25 @@ def get_my_jobs(user_id, application_status, job_status):
     """returns all the jobs the user has created if an employer,
     returns all the jobs the user has applied for if an employee with a given application status and a given job status"""
     if user_role() == 0:
-        sql = """SELECT j.role, u.name, a.status, a.id from jobs j, users u, applications a
+        sql = """SELECT j.role, j.description, j. beginning, j. ends, j.closing, u.name, a.status, a.id from jobs j, users u, applications a
         WHERE j.employer_id = u.id AND a.job_id = j.id and a.user_id =:user_id and a.status =:application_status and j.status =:job_status and j.visible = 1"""
         return db.session.execute(sql, {"user_id":user_id, "application_status":application_status, "job_status":job_status}).fetchall()
-    if user_role() == (1):
-        #palauta tietyn työnantajan lisäämät työpaikat
+    if user_role() == 1:
         if job_status == 1:
             sql = """SELECT j.role, j.id, j.description, j.form, count(a.id) from jobs j left join applications a on a.job_id=j.id
             where j.employer_id =:user_id and j.status =:job_status and j.visible = 1 group by j.id"""
             return db.session.execute(sql, {"user_id": user_id, "job_status":job_status}).fetchall()
-        else:
-            #TODO näytä myös suljetut paikat joihin ei ole valittu yhtäjään hakijaa
-            sql = """SELECT j.role, j.id, j.description, u.name from jobs j, users u, applications a where employer_id =:user_id and j.status=:job_status 
-            and j.visible = 1 and a.user_id = u.id and a.job_id = j.id and a.status = 1"""
-            return db.session.execute(sql, {"user_id":user_id, "job_status":job_status})
+        elif job_status == 0:
+            #returns the chosen applicant for the given job if one has been chosen, hence the subqueries
+            
+            subquery1 = "(select a.id from jobs j left join applications a on a.job_id = j.id where a.id is not null and a.status = 1)"
+            subquery2 = "select u.name from users u, applications a2 where u.id = a2.id and a.id = a2.id"
+
+            sql = """select j.id as job_id, j.role, j.description, a.id, case when a.id in (select a.id from jobs j left join applications a on a.job_id = j.id where a.id is not null and a.status = 1) 
+            then (select u.name from users u, applications a2 where u.id = a2.user_id and a.id = a2.id) else 'Ei valittua hakijaa' end as applicant_name from jobs j
+            left join applications a on j.id = a.job_id where j.employer_id =:user_id and j.status =:job_status"""
+
+            return db.session.execute(sql, {"user_id":user_id, "job_status":job_status}).fetchall()
 
 def get_open_jobs_employer():
     """returns all the jobs for the employee (in the main page)"""

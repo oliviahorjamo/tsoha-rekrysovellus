@@ -1,14 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
+
 <h2>Lisää profiiliteksti</h2>
+
 <p>Kirjoita profiiliteksti (max. 50 sanaa)</p>
 
 <form action="/edit_profile" method ="POST">
 <textarea name = "profile_text" cols ="40" rows = "5" >{{profile_text}}</textarea>
 <br>
-<input type="submit" name ="Lisää profiiliteksti">
+<input type="submit" value = "Lisää profiiliteksti" name ="Lisää profiiliteksti">
 <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
 
+<p>Palaa tarkastelemaan profiiliasi: <a href = "/own_profile">Oma profiilisi</a></p>
 
 {% endblock %}

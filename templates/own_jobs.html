@@ -3,37 +3,62 @@
 
 <h2>Omat työpaikkailmoituksesi</h2>
 
+
+<div class = "info_text">
+    <p> Tällä sivulla voit tarkastella luomiasi työpaikkailmoituksia. Lisäksi voit tarkastella paikkoihin lähetettyjä hakemuksia.
+        Voit myös poistaa luomasi työpaikkailmoituksen.
+    </p>
+</div>
+
 <h3>Avoimet ilmoitukset: </h3>
 
 {% if open_jobs %}
+
 {% for job in open_jobs %}
-<p>------------</p>
-<p>Rooli: {{job.role}}</p>
-<p>Työnantaja: {{job.name}}</p>
-<p>Kuvaus: {{job.description}}</p>
-<p> Hakulomake tähän paikkaan: <a href ="/application_form/{{job.form}}">Tarkastele lomaketta </a></p>
-<br>
-<p>Paikkaan on lähetetty {{job.count}} kpl hakemuksia</p>
-{% if job.count != 0 %}
-<p>Voit tarkastella paikkaan  lähetettyjä hakemuksia tästä: <a href="/all_applicants/{{job.id}}">Tarkastele hakemuksia</a></p>
-{% endif %}
-<p>Voit poistaa työpaikkailmoituksen tästä. Tällöin yhtäkään hakijaa ei valita paikkaan: <a href="/delete_job/{{job.id}}">Poista työpaikka</a></p>
+
+<div class = "content_box">
+    <p>Rooli: {{job.role}}</p>
+    <p>Työnantaja: {{job.name}}</p>
+    <p>Kuvaus: {{job.description}}</p>
+    <p> Hakulomake tähän paikkaan: <a href ="/application_form/{{job.form}}">Tarkastele lomaketta </a></p>
+    <br>
+    <p>Paikkaan on lähetetty {{job.count}} kpl hakemuksia</p>
+    {% if job.count != 0 %}
+    <p>Voit tarkastella paikkaan  lähetettyjä hakemuksia tästä: <a href="/all_applicants/{{job.id}}">Tarkastele hakemuksia</a></p>
+    {% endif %}
+    <p>Voit poistaa työpaikkailmoituksen tästä. Tällöin yhtäkään hakijaa ei valita paikkaan: <a href="/delete_job/{{job.id}}">Poista työpaikka</a></p>
+</div>
+
 {% endfor %}
+
 {% else %}
-<p>Sinulla ei ole yhtäkään työpaikkailmoitusta auki </p>
+<div class = "content_box_without_content">
+    <p>Sinulla ei ole yhtäkään työpaikkailmoitusta auki </p>
+</div>
+
 {% endif %}
 
 <h3>Suljetut paikat: </h3>
+
 {% if application_period_ended %}
+
 {% for job in application_period_ended %}
-<p>Rooli: {{job.role}}</p>
-<p>Paikkaan valittu hakija: {{job.name}} </p>
-<p>---------</p>
+<div class = "content_box">
+    <p>Rooli: {{job.role}}</p>
+    <p>Kuvaus: {{job.description}}</p>
+    <p>Paikkaan valittu hakija: {{job.applicant_name}} </p>
+</div>
+
 {% endfor %}
+    
 {% else %}
-Et ole lisännyt yhtäkään paikkaa, jonka hakuaika olisi sulkeutunut
+<div class = "content_box_without_content">
+    <p>Et ole lisännyt yhtäkään paikkaa, jonka hakuaika olisi sulkeutunut</p>
+</div>
+    
 {% endif %}
 
+<br>
 <p> Palaa etusivulle: <a href = "/mainpage">Etusivu</a></p>
 
 {% endblock %}

@@ -73,5 +73,5 @@ def select_applicant(application_id):
     
 def show_application_form(form_id):
     """shows the application form with the given form id"""
-    sql = """SELECT question_1, question_2, question_3, question_4, question_5 FROM application_forms WHERE id=:form_id"""
+    sql = """SELECT question_1, question_2, question_3, question_4, question_5, j.role FROM application_forms a, jobs j WHERE a.id=:form_id and j.form = a.id"""
     return db.session.execute(sql, {"form_id":form_id}).fetchone()

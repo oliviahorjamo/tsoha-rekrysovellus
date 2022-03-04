@@ -2,47 +2,43 @@
 {% block content %}
 
 {% if user_role == 0 %}
-<p>Hakemuksesi työpaikkaan: {{application.role}}</p>
+<h2>Hakemuksesi työpaikkaan: {{application.role}}</h2>
 {% else %}
-<p> Hakijan {{application.name}} hakemus työpaikkaan {{application.role}}</p>
+<h2> Hakijan {{application.name}} hakemus työpaikkaan {{application.role}}</h2>
 {% endif %}
 
 {% if application.question_1 != "-" %}
-{{application.question_1}}
+<p> {{application.question_1}} </p>
+<p>{{application.answer_1}}</p>
 <br>
-{{application.answer_1}}
 {% endif %}
-<br>
-<br>
+
 {% if application.question_2 != "" %}
-{{application.question_2}}
+<p>{{application.question_2}}</p>
+<p>{{application.answer_2}}</p>
 <br>
-{{application.answer_2}}
 {% endif %}
-<br>
-<br>
+
 {% if application.question_3 != "" %}
-{{application.question_3}}
+<p>{{application.question_3}}</p>
+<p>{{application.answer_3}}</p>
 <br>
-{{application.answer_3}}
 {% endif %}
-<br>
-<br>
+
 {% if application.question_4 != "" %}
-{{application.question_4}}
+<p>{{application.question_4}}</p>
+<p>{{application.answer_4}}</p>
 <br>
-{{application.answer_4}}
 {% endif %}
-<br>
 
 {% if application.question_5 != "" %}
-{{application.question_5}}
+<p>{{application.question_5}}</p>
+<p>{{application.answer_5}}</p>
 <br>
-{{application.answer_5}}
 {% endif %}
-<br>
 
 {% if user_role == 0 %}
+<br>
 <p>Palaa takaisin omien hakemusten tarkasteluun <a href = "/own_applications">Omat hakemukset </a></p> 
 {% else %}
 <br>

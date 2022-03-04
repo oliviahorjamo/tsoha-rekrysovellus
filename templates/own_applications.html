@@ -1,43 +1,84 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h2>Hakemasi työpaikat: </h2>
+<h2>Hakemasi työpaikat </h2>
 
-<!--TODO, jos ei yhtään työpaikkaa, tee käyttöliittymästä järkevämpi-->
+
+<div class = "info_text">
+    <p> Tällä sivulla voit tarkastella työpaikkoihin lähettämiäsi hakemuksia haun
+        statuksen mukaan.
+    </p>
+</div>
+
 <h3>Saadut työpaikat: {{count_got_elected}} kpl</h3>
 
 {% if not got_elected %}
-<p>Ei näytettäviä työpaikkoja</p>
+
+<div class = "content_box_without_content">
+    <p>Ei näytettäviä työpaikkoja</p>
+</div>
+
 {% else %}
+
 {% for application in got_elected %}
-<p>------------</p>
-<p>Rooli: {{application.role}}</p>
-<p>Työnantaja: {{application.name}}</p>
-<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+
+<div class = "content_box">
+    <p>Rooli: {{application.role}}</p>
+    <p>Työnantaja: {{application.name}}</p>
+    <p>Työpaikan kuvaus: {{application.description}}</p>
+    <p>Työ alkaa: {{application.beginning}}</p>
+    <p>Työ päättyy: {{applications.ends}}</p>
+    <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+</div>
+
 {% endfor %}
+
 {% endif %}
 
 <h3>Haku auki: {{count_open_applications}} kpl</h3>
+
 {% if not open_applications %}
-<p>Et ole hakenut yhtäkään paikkaa, jonka hakuaika olisi vielä auki</p>
+
+<div class = "content_box_without_content">
+    <p>Et ole hakenut yhtäkään paikkaa, jonka hakuaika olisi vielä auki</p> 
+</div>
+
 {% else %}
+
 {% for application in open_applications %}
-<p>------------</p>
-<p>Rooli: {{application.role}}</p>
-<p>Työnantaja: {{application.name}}</p>
-<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+<div class = "content_box">
+    <p>Rooli: {{application.role}}</p>
+    <p>Työnantaja: {{application.name}}</p>
+    <p>Työpaikan kuvaus: {{application.description}}</p>
+    <p>Työ alkaa: {{application.beginning}}</p>
+    <p>Työ päättyy: {{applications.ends}}</p>
+    <p>Hakuaika päättyy: {{application.closing}}</p>
+    <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+</div>
+
 {% endfor %}
+
 {% endif %}
 
 <h3>Haku päättynyt: {{count_not_elected}} kpl</h3>
+
 {% if not not_elected %}
-<p>Ei näytettäviä hakemuksia</p>
+
+<div class = "content_box_without_content">
+    <p>Ei näytettäviä hakemuksia</p>
+</div>
+
 {% else %}
+
 {% for application in not_elected %}
-<p>------------</p>
-<p>Rooli: {{application.role}}</p>
-<p>Työnantaja: {{application.name}}</p>
-<p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+<div class = "content_box">
+    <p>Rooli: {{application.role}}</p>
+    <p>Työnantaja: {{application.name}}</p>
+    <p>Työpaikan kuvaus: {{application.description}}</p>
+    <p>Työ alkaa: {{application.beginning}}</p>
+    <p>Työ päättyy: {{applications.ends}}</p>
+    <p>Voit tarkastella hakemustasi tästä: <a href="/application/{{application.id}}">Tarkastele hakemusta</a></p>
+</div>
 {% endfor %}
 {% endif %}
 

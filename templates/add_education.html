@@ -1,12 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Lisää koulutus</h2>
+
+<h2>Lisää uusi koulutus</h2>
+
+<div class = "info_text">
+    <p>Tällä sivulla voit lisätä uuden koulutustiedon. Lomakkeen kaikkiin kohtiin on vastattava. </p>
+</div>
 
 <form action="/add_education" method ="POST">
     <p>Koulu: </p>
     <input type="text" name="school">
     <br>
-    <p>Tutkinnon taso: </p>
+    <p>Tutkinnon nimi: </p>
     <input type="text" name="level">
     <br>
     <p>Koulutuksen kuvaus: </p>
@@ -18,8 +23,11 @@
     <p>Valmistumispäivämäärä: </p>
     <input type="date" name="graduation">
     <br>
-    <input type="submit" name="Lisää koulutus">
+    <br>
+    <input type="submit"  value = "Lisää koulutus" name="Lisää koulutus">
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 </form>
+
+<p>Palaa tarkastelemaan profiiliasi: <a href = "/own_profile">Oma profiilisi</a></p>
 
 {% endblock %}
