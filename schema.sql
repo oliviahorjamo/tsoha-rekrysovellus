@@ -45,7 +45,7 @@ CREATE TABLE application_forms (
 CREATE TABLE jobs (
 	id SERIAL PRIMARY KEY,
 	employer_id INTEGER REFERENCES users,
-	opened TIMESTAMP,
+	opened DATE,
 	closing DATE,
 	role TEXT,
 	description TEXT,
