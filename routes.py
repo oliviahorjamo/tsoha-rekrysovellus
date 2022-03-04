@@ -66,8 +66,12 @@ def logout():
 
 @app.route("/mainpage", methods = ["GET", "POST"])
 def mainpage():
-    open_jobs = jobs.get_open_jobs()
-    return render_template("mainpage.html", open_jobs = open_jobs)
+    if users.user_role() == 1:
+        open_jobs_employer = jobs.get_open_jobs_employer()
+        return render_template("mainpage.html", open_jobs = open_jobs_employer)
+    else:
+        open_jobs_employee = jobs.get_open_jobs_employee()
+        return render_template("mainpage.html", open_jobs = open_jobs_employee)
 
 @app.route("/own_profile", methods = ["GET", "POST"])
 def own_profile():
@@ -98,9 +102,10 @@ def edit_profile():
         else:
             return render_template("error.html", message="Profiilitekstin päivittäminen epäonnistui")
 
-@app.route("/show_profile/<int:applicant_id>/<int:job_id>", methods = ["GET", "POST"])
-def show_profile(applicant_id, job_id):
-    """shows the profile of the applicant with the given username"""
+@app.route("/show_profile_applicant/<int:applicant_id>/<int:job_id>", methods = ["GET", "POST"])
+def show_profile_applicant(applicant_id, job_id):
+    """shows the profile of the applicant with the given id,
+    job_id is used for navigating back to the job page"""
 
     users.require_role(1)
 
@@ -113,7 +118,16 @@ def show_profile(applicant_id, job_id):
     education = profiles.get_all_education(applicant_id)
 
     if request.method == "GET":
-        return render_template("show_profile.html", name = name, profile_text = profile_text, job_experience = job_experience, education = education, job_id = job_id)
+        return render_template("show_profile.html", name = name, profile_text = profile_text, job_experience = job_experience, education = education, job_id = job_id, applicant = True)
+
+@app.route("/show_profile_employer/<int:employer_id>", methods = ["GET", "POST"])
+def show_profile_employee(employer_id):
+
+    name = users.get_name(employer_id)
+    profile_text = profiles.get_profile_text(employer_id)
+
+    if request.method == "GET":
+        return render_template("show_profile.html", name = name, profile_text = profile_text, applicant = False)
 
 @app.route("/add_job_experience", methods = ["GET", "POST"])
 def add_job_experience():
@@ -397,7 +411,7 @@ def own_jobs():
     application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
 
     if request.method == "GET":
-        return render_template("my_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
+        return render_template("own_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
 
 
 @app.route("/all_applicants/<int:job_id>", methods = ["GET", "POST"])

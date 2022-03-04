@@ -18,6 +18,18 @@
 
 <h2> Etusivu </h2>
 
+<div class = "info_text"> 
+    {% if session.user_role == 1 %}
+    <p> Tällä sivulla näet kaikki avoimet työpaikat. Omia
+    työpaikkailmoituksiasi voit tarkastella yläpalkista löytyvästä
+    painikkeesta.
+    </p>
+    {% else %}
+    <p> Tällä sivulla näet kaikki avoimet työpaikat ja voit hakea paikkoja, joihin et ole vielä
+        hakenut. Hakemiasi paikkoja voit tarkastella ylävalikosta löytyvästä valikosta.
+    </p>
+    {% endif %}
+
 <h3>Kaikki avoimet työpaikat</h3>
 
 {% if open_jobs %}
@@ -25,7 +37,7 @@
 {% for job in open_jobs %}
 <div class = "content_box">
     <p>Rooli: {{job.role}}</p>
-    <p>Työnantaja: {{job.employer_name}}</p>
+    <p>Työnantaja:</p><a href = "/show_profile_employer/{{job.employer_id}}">{{job.employer_name}}</a>
     <p>Työpaikan kuvaus: {{job.description}}</p>
     <nav>
         <ul>
@@ -39,15 +51,18 @@
             <li>Haku päättyy: {{job.closing}}</li>
         </ul>
     </nav>
+    {% if session.user_role == 0 %}
     <a href="/apply/{{job.id}}">Hae paikkaa </a>
+    {% endif %}
 </div>
 {% endfor %}
 
 {% else %}
-
+{% if session.user_role == 0 %}
+Ei auki olevia paikkoja, joihin et ole vielä hakenut.
+{% else %}
 Ei auki olevia paikkoja.
-
 {% endif %}
-
+{% endif %}
 
 {% endblock %}

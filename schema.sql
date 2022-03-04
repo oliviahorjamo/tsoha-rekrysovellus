@@ -64,9 +64,10 @@ CREATE TABLE applications (
 	answer_1 TEXT,
 	answer_2 TEXT,
 	answer_3 TEXT,
-	amswer_4 TEXT,
+	answer_4 TEXT,
 	answer_5 TEXT,
 	sent_at TIMESTAMP,
 	user_id INTEGER REFERENCES users,
-	status INTEGER
+	status INTEGER,
+	CONSTRAINT unique_application UNIQUE(job_id, user_id)
 );

@@ -21,10 +21,16 @@ def get_my_jobs(user_id, application_status, job_status):
             and j.visible = 1 and a.user_id = u.id and a.job_id = j.id and a.status = 1"""
             return db.session.execute(sql, {"user_id":user_id, "job_status":job_status})
 
-def get_open_jobs():
-    """returns all the jobs (in the main page)"""
-    sql = """SELECT u.name as employer_name, j.id, j.role, j.description, j.beginning, j.ends, j.opened, j.closing FROM USERS u, JOBS j WHERE
-    u.id = j.employer_id AND visible = 1 AND j.status = 1"""
+def get_open_jobs_employer():
+    """returns all the jobs for the employee (in the main page)"""
+    sql = """SELECT u.name as employer_name, u.id as employer_id, j.id, j.role, j.description, j.beginning, j.ends, j.opened, j.closing FROM USERS u, JOBS j WHERE
+    u.id = j.employer_id AND j.visible = 1 AND j.status = 1"""
+    return db.session.execute(sql).fetchall()
+
+def get_open_jobs_employee():
+    """returns all the jobs the employee has not applied for"""
+    sql = """SELECT u.name as employer_name, u.id as employer_id, j.id, j.role, j.description, j.beginning, j.ends, j.opened, j.closing FROM USERS u, JOBS j WHERE 
+    u.id = j.employer_id AND j.visible = 1 AND j.status = 1 AND j.id NOT IN (SELECT job_id FROM applications)"""
     return db.session.execute(sql).fetchall()
 
 def get_job_info(job_id):
@@ -35,17 +41,26 @@ def get_job_info(job_id):
     e.id and j.form = af.id and j.id =:job_id"""
     return db.session.execute(sql, {"job_id":job_id}).fetchone()
 
-def add_job(employer_id, role, description, beginning, ends, closing):
+def add_job_1(employer_id, role, description, beginning, ends, closing):
     """"adds a new job to apply for (only for employers"""
     try:
         sql = """INSERT into JOBS (employer_id, role, description, beginning, ends, opened, closing, status, visible, form) VALUES (:employer_id, 
-        :role, :description, :beginning, :ends, NOW(), :closing, 1, 1, NULL) RETURNING id"""
+        :role, :description, :beginning, :ends, CAST(GET_DATE() AS date), :closing, 1, 1, NULL) RETURNING id"""
         job_id = db.session.execute(sql, {"employer_id":employer_id, "role":role, 
         "description":description, "beginning":beginning, "ends":ends, "closing":closing}).fetchone()[0]
         db.session.commit()
         return job_id
     except:
         return False
+
+def add_job(employer_id, role, description, beginning, ends, closing):
+    """"adds a new job to apply for (only for employers"""
+    sql = """INSERT into JOBS (employer_id, role, description, beginning, ends, opened, closing, status, visible, form) VALUES (:employer_id, 
+    :role, :description, :beginning, :ends, NOW(), :closing, 1, 1, NULL) RETURNING id"""
+    job_id = db.session.execute(sql, {"employer_id":employer_id, "role":role, 
+    "description":description, "beginning":beginning, "ends":ends, "closing":closing}).fetchone()[0]
+    db.session.commit()
+    return job_id
 
 def delete_job(user_id, job_id):
     """removes a job (only available for the one who added the job"""

@@ -40,6 +40,10 @@ Lisäksi mahdollisuus poistaa koulutuksia? -> visible sarake education -tauluun?
     <p>-------------------</p>
     {% endfor %}
 
+{% if applicant == True %}
 <p>Palaa takaisin kyseiseen työpaikkaan lähetettyjä hakemuksia </p><a href="/all_applicants/{{job_id}}">Kaikki hakemukset</a>
+{% else %}
+<p>Palaa takaisin etusivulle: </p> <a href = "/mainpage"> Etusivu</a>
+{% endif %}
 
 {% endblock %}
