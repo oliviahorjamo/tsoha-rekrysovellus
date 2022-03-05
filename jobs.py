@@ -32,11 +32,11 @@ def get_open_jobs_employer():
     u.id = j.employer_id AND j.visible = 1 AND j.status = 1"""
     return db.session.execute(sql).fetchall()
 
-def get_open_jobs_employee():
+def get_open_jobs_employee(employee_id):
     """returns all the jobs the employee has not applied for"""
     sql = """SELECT u.name as employer_name, u.id as employer_id, j.id, j.role, j.description, j.beginning, j.ends, j.opened, j.closing FROM USERS u, JOBS j WHERE 
-    u.id = j.employer_id AND j.visible = 1 AND j.status = 1 AND j.id NOT IN (SELECT job_id FROM applications)"""
-    return db.session.execute(sql).fetchall()
+    u.id = j.employer_id AND j.visible = 1 AND j.status = 1 AND j.id NOT IN (SELECT job_id FROM applications WHERE applications.user_id =:employee_id)"""
+    return db.session.execute(sql, {"employee_id":employee_id}).fetchall()
 
 def get_job_info(job_id):
     """returns the info of a certain job and info on whether the user has applied for the job"""

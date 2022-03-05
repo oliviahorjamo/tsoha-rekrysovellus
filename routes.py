@@ -71,7 +71,7 @@ def mainpage():
         open_jobs_employer = jobs.get_open_jobs_employer()
         return render_template("mainpage.html", open_jobs = open_jobs_employer)
     else:
-        open_jobs_employee = jobs.get_open_jobs_employee()
+        open_jobs_employee = jobs.get_open_jobs_employee(users.user_id())
         return render_template("mainpage.html", open_jobs = open_jobs_employee)
 
 @app.route("/own_profile", methods = ["GET", "POST"])
