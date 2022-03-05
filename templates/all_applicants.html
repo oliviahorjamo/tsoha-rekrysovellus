@@ -8,11 +8,13 @@
 
 <h2>Kaikki hakemukset paikkaan: {{job_role}}</h2>
 
-<ul>
-{% for applicant in all_applicants %}
-    <li><p><a href ="/show_profile_applicant/{{applicant.applicant_id}}/{{job_id}}">{{applicant.name}}</a>: <a href = "/application/{{applicant.application_id}}">Tarkastele hakemusta</a></p></li>
-{% endfor %}
-</ul>
+<div class = "all_applicants">
+    <ul>
+    {% for applicant in all_applicants %}
+        <li><p><a href ="/show_profile_applicant/{{applicant.applicant_id}}/{{job_id}}">{{applicant.name}}</a>: <a href = "/application/{{applicant.application_id}}">Tarkastele hakemusta</a></p></li>
+    {% endfor %}
+    </ul>
+</div>
 
 <br>
 <p>Palaa tarkastelemaan omia työpaikkailmoituksia: <a href = "/own_jobs">Omat työpaikkailmoitukset </a></p>
