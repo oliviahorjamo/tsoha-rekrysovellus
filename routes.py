@@ -10,10 +10,7 @@ import applications
 @app.route("/")
 def index():
 
-    jobs_to_close = jobs.find_jobs_to_close(date.today())
-
-    for job in jobs_to_close:
-        jobs.close_job(job[0])
+    jobs.close_old_jobs()
 
     return render_template("index.html")
 
@@ -337,15 +334,6 @@ def delete_job(job_id):
         return redirect("/own_jobs")
     else:
         return render_template("error.html", message = "Työpaikan poistaminen epäonnistui")
-
-@app.route("/job_info/<int:job_id>", methods = ["GET"])
-def show_job(job_id):
-
-    info = jobs.get_job_info(job_id)
-    applied = applications.applied_or_not(users.user_id(), job_id)
-
-    if request.method == "GET":
-        return render_template("show_job.html", info=info, applied = applied)
 
 @app.route("/apply/<int:job_id>", methods = ["GET" ,"POST"])
 def apply(job_id):
