@@ -1,2 +1,6 @@
 .env
 venv
+node_modules
+__pycache__
+heroku_install.sh
+package-lock.json
