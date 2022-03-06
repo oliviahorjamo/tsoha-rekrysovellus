@@ -34,7 +34,7 @@ def get_my_jobs(user_id, application_status, job_status):
                     ELSE 'Ei valittua hakijaa' END 
                     AS applicant_name 
                     FROM jobs j LEFT JOIN applications a ON j.id = a.job_id 
-                    WHERE j.employer_id =:user_id AND j.status =:job_status"""
+                    WHERE j.employer_id =:user_id AND j.status =:job_status AND j.visible = 1"""
             return db.session.execute(sql, {"user_id":user_id, "job_status":job_status}).fetchall()
 
 def get_open_jobs_employer():
