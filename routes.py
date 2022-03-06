@@ -1,5 +1,6 @@
 from datetime import date
 from email.mime import application
+import profile
 from app import app
 from flask import render_template, request, redirect
 import users
@@ -9,10 +10,10 @@ import applications
 
 @app.route("/")
 def index():
-
     jobs.close_old_jobs()
 
     return render_template("index.html")
+
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -41,6 +42,7 @@ def register():
 
         return redirect("/mainpage")
 
+
 @app.route("/login", methods =["GET","POST"])
 def login():
 
@@ -61,7 +63,7 @@ def login():
 def logout():
     users.logout()
     return redirect("/")
-
+    users.check_csrf()
 @app.route("/mainpage", methods = ["GET", "POST"])
 def mainpage():
     if users.user_role() == 1:
@@ -71,23 +73,25 @@ def mainpage():
         open_jobs_employee = jobs.get_open_jobs_employee(users.user_id())
         return render_template("mainpage.html", open_jobs = open_jobs_employee)
 
-@app.route("/own_profile", methods = ["GET", "POST"])
+@app.route("/own_profile", methods = ["GET"])
 def own_profile():
-
     profile_text = profiles.get_profile_text(users.user_id())
     job_experience = profiles.get_all_job_experience(users.user_id())
     education = profiles.get_all_education(users.user_id())
 
-    if request.method == "GET":
-        return render_template("own_profile.html", profile_text=profile_text, job_experience=job_experience, education=education)
+    return render_template("own_profile.html", profile_text=profile_text, 
+                            job_experience=job_experience, education=education)
 
-@app.route("/edit_profile", methods = ["GET", "POST"])
-def edit_profile():
+@app.route("/edit_profile_text", methods = ["GET", "POST"])
+def edit_profile_text():
 
     profile_text = profiles.get_profile_text(users.user_id())
 
+    if not profile_text:
+        profile_text = ""
+
     if request.method == "GET":
-        return render_template("profile_text.html", profile_text=profile_text)
+        return render_template("edit_profile_text.html", profile_text=profile_text)
     
     if request.method == "POST":
         profile_text = request.form["profile_text"]
@@ -95,10 +99,23 @@ def edit_profile():
         if len(profile_text) > 5000:
             return render_template("error.html", message = "Profiiliteksti on liian pitkä")
 
-        if profiles.add_profile_text(users.user_id(), profile_text):
-            return redirect("/own_profile")
+        if profiles.delete_profile_text(users.user_id()):
+
+            if profiles.add_profile_text(users.user_id(), profile_text):
+                return redirect("/own_profile")
+            else:
+                return render_template("error.html", message="Uuden profiilitekstin lisääminen epäonnistui")
+
         else:
-            return render_template("error.html", message="Profiilitekstin päivittäminen epäonnistui")
+            return render_template("error.html", message = "Vanhan profiilitekstin poistaminen epäonnistui")
+
+@app.route("/delete_profiletext", methods = ["GET", "POST"])
+def delete_profile_text():
+
+    if profiles.delete_profile_text(users.user_id()):
+        return redirect("/own_profile")
+    else:
+        return render_template("error.html", message = "Profiilitekstin poistaminen epäonnistui")
 
 @app.route("/show_profile_applicant/<int:applicant_id>/<int:job_id>", methods = ["GET", "POST"])
 def show_profile_applicant(applicant_id, job_id):
@@ -108,15 +125,13 @@ def show_profile_applicant(applicant_id, job_id):
     users.require_role(1)
 
     name = users.get_name(applicant_id)
-
     profile_text = profiles.get_profile_text(applicant_id)
-
     job_experience = profiles.get_all_job_experience(applicant_id)
-
     education = profiles.get_all_education(applicant_id)
 
-    if request.method == "GET":
-        return render_template("show_profile.html", name = name, profile_text = profile_text, job_experience = job_experience, education = education, job_id = job_id, applicant = True)
+    return render_template("show_profile.html", name = name, profile_text = profile_text, 
+                            job_experience = job_experience, education = education, job_id = job_id, 
+                            applicant = True)
 
 @app.route("/show_profile_employer/<int:employer_id>", methods = ["GET", "POST"])
 def show_profile_employee(employer_id):
@@ -124,17 +139,17 @@ def show_profile_employee(employer_id):
     name = users.get_name(employer_id)
     profile_text = profiles.get_profile_text(employer_id)
 
-    if request.method == "GET":
-        return render_template("show_profile.html", name = name, profile_text = profile_text, applicant = False)
+    return render_template("show_profile.html", name = name, profile_text = profile_text, applicant = False)
 
 @app.route("/add_job_experience", methods = ["GET", "POST"])
 def add_job_experience():
-
     users.require_role(0)
+
     if request.method == "GET":
         return render_template("add_job_experience.html")
     
     if request.method == "POST":
+        users.check_csrf()
 
         employer = request.form["employer"]
         role = request.form["role"]
@@ -158,7 +173,6 @@ def add_job_experience():
 
 @app.route("/edit_job_experience/<int:experience_id>", methods = ["GET", "POST"])
 def edit_job_experience(experience_id):
-
     users.require_role(0)
 
     job = profiles.get_job_experience(experience_id)
@@ -167,6 +181,7 @@ def edit_job_experience(experience_id):
         return render_template("edit_experience.html", job=job)
     
     if request.method == "POST":
+        users.check_csrf()
 
         employer = request.form["employer"]
         role = request.form["role"]
@@ -184,16 +199,17 @@ def edit_job_experience(experience_id):
             return render_template("error.html", message = "Työpaikan kuvaus voi olla max. 500 merkkiä")
 
         if profiles.add_job_experience(users.user_id(), employer, role, description, beginning, ended):
+
             if profiles.delete_job_experience(experience_id):
                 return redirect("/own_profile")
             else:
                 return render_template("error.html", message = "Vanhan työkokemuksen poistaminen epäonnistui")
+
         else:
             return render_template("error.html", message = "Työkokemuksen päivittäminen epäonnistui")
 
 @app.route("/delete_job_experience/<int:id>", methods = ["GET", "POST"])
 def delete_job_experience(id):
-
     users.require_role(0)
 
     if profiles.delete_job_experience(id):
@@ -204,13 +220,13 @@ def delete_job_experience(id):
 
 @app.route("/add_education", methods =["GET", "POST"])
 def add_education():
-
     users.require_role(0)
 
     if request.method == "GET":
         return render_template("add_education.html")
     
     if request.method == "POST":
+        users.check_csrf()
 
         school = request.form["school"]
         level = request.form["level"]
@@ -234,7 +250,6 @@ def add_education():
 
 @app.route("/edit_education/<int:id>", methods = ["GET", "POST"])
 def edit_education(id):
-    
     users.require_role(0)
     
     education = profiles.get_education(id)
@@ -243,6 +258,7 @@ def edit_education(id):
         return render_template("edit_education.html", education=education)
     
     if request.method == "POST":
+        users.check_csrf()
 
         school = request.form["school"]
         level = request.form["level"]
@@ -270,7 +286,6 @@ def edit_education(id):
 
 @app.route("/delete_education/<int:education_id>", methods = ["GET", "POST"])
 def delete_education(education_id):
-
     users.require_role(0)
 
     if profiles.delete_education(education_id):
@@ -287,8 +302,7 @@ def add_job():
         return render_template("add_job.html")
 
     if request.method == "POST":
-
-        #TODO syötteen oikeellisuuden tarkistus ja virhemahdollisuuden käsittely
+        users.check_csrf()
 
         role = request.form["role"]
         description = request.form["description"]
@@ -300,7 +314,6 @@ def add_job():
         question_3 = request.form["question_3"]
         question_4 = request.form["question_4"]
         question_5 = request.form["question_5"]
-
 
         if len(role) > 50:
             return render_template("error.html", message = "Rooli voi olla max. 50 merkkiä")
@@ -327,7 +340,6 @@ def add_job():
 
 @app.route("/delete_job/<int:job_id>", methods = ["GET", "POST"])
 def delete_job(job_id):
-
     users.require_role(1)
 
     if jobs.delete_job(users.user_id(), job_id):
@@ -337,7 +349,6 @@ def delete_job(job_id):
 
 @app.route("/apply/<int:job_id>", methods = ["GET" ,"POST"])
 def apply(job_id):
-
     users.require_role(0)
 
     application_form = jobs.get_application_form(job_id)
@@ -347,13 +358,13 @@ def apply(job_id):
         return render_template("apply.html", application_form=application_form, job_id=job_id)
 
     if request.method == "POST":
+        users.check_csrf()
 
         answer_1 = request.form["answer_1"]
         answer_2 = request.form["answer_2"]
         answer_3 = request.form["answer_3"]
         answer_4 = request.form["answer_4"]
         answer_5 = request.form["answer_5"]
-
 
         if len(answer_1) > 500 or len(answer_2) > 500 or len(answer_3) > 500 or len(answer_4) > 500 or len(answer_5) > 500:
             return render_template("error.html", message = "Vastauksen pituus voi olla max. 500 merkkiä")
@@ -365,67 +376,53 @@ def apply(job_id):
 
 @app.route("/own_applications", methods = ["GET", "POST"])
 def own_applications():
-
+    """finds the jobs the employee has applied for and gives them as parameter to the html-file"""
     users.require_role(0)
 
-    users.require_role(0)
     not_elected = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 0)
-
-    #paikka saatu (tällöin job status automaattisesti 0)
     got_elected = jobs.get_my_jobs(users.user_id(), application_status = 1, job_status = 0)
-
-    #haku vielä auki (tällöin application status automaattisesti 0)
     open_applications = jobs.get_my_jobs(users.user_id(), application_status = 0, job_status = 1)
 
     if request.method == "GET":
-        return render_template("own_applications.html", open_applications=open_applications, got_elected=got_elected, not_elected = not_elected,
-        count_open_applications = len(open_applications), count_got_elected = len(got_elected), count_not_elected = len(not_elected))
+        return render_template("own_applications.html", open_applications=open_applications, 
+                                got_elected=got_elected, not_elected = not_elected,
+                                count_open_applications = len(open_applications), 
+                                count_got_elected = len(got_elected), 
+                                count_not_elected = len(not_elected))
+
+@app.route("/own_jobs", methods = ["GET", "POST"])
+def own_jobs():
+    """finds the jobs the employer has added and gives them as a parameter to the html-file"""
+    users.require_role(1)
+
+    open_jobs = jobs.get_my_jobs(users.user_id(), None, 1)
+    application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
+
+    return render_template("own_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
 
 @app.route("/application/<int:id>", methods = ["GET", "POST"])
 def show_application(id):
 
     application = applications.show_application(id)
 
-    if request.method == "GET":
-        return render_template("show_application.html", application=application, user_role = users.user_role())
-
-
-@app.route("/own_jobs", methods = ["GET", "POST"])
-def own_jobs():
-    """returns the job advertisements of a given employer"""
-
-    users.require_role(1)
-
-    open_jobs = jobs.get_my_jobs(users.user_id(), None, 1)
-    application_period_ended = jobs.get_my_jobs(users.user_id(), None, 0)
-
-    print(application_period_ended)
-
-    if request.method == "GET":
-        return render_template("own_jobs.html", open_jobs = open_jobs, application_period_ended = application_period_ended)
-
+    return render_template("show_application.html", application=application, user_role = users.user_role())
 
 @app.route("/all_applicants/<int:job_id>", methods = ["GET", "POST"])
 def all_applications(job_id):
-    
     users.require_role(1)
 
     all_applicants = applications.get_all_applicants(job_id)
-
     job_role = jobs.get_job_role(job_id)
 
-    if request.method == "GET":
-        return render_template("all_applicants.html", all_applicants=all_applicants, job_role = job_role, job_id=job_id)
+    return render_template("all_applicants.html", all_applicants=all_applicants, job_role = job_role, job_id=job_id)
 
 @app.route("/select_applicant/<int:application_id>", methods = ["GET", "POST"])
 def select_applicant(application_id):
-
     users.require_role(1)
-
-    applications.select_applicant(application_id)
 
     job_id = jobs.get_job_id(application_id)
 
+    applications.select_applicant(application_id)
     jobs.close_job(job_id)
 
     return redirect("/own_jobs")
@@ -435,7 +432,6 @@ def show_application_form(form_id):
 
     form = applications.show_application_form(form_id)
 
-    if request.method == "GET":
-        return render_template("show_form.html", form = form)
+    return render_template("show_form.html", form = form)
 
 

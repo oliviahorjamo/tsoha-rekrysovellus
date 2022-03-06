@@ -3,9 +3,6 @@ from db import db
 
 def add_profile_text(user_id, text):
     """adds profile text to the profile (both employees and employers)"""
-    sql = "INSERT into PROFILE_TEXT (profile_text, user_id, visible) VALUES (:text, :user_id, 1)"
-    db.session.execute(sql, {"text":text, "user_id":user_id})
-    db.session.commit()
     try:
         sql = "INSERT into PROFILE_TEXT (profile_text, user_id, visible) VALUES (:text, :user_id, 1)"
         db.session.execute(sql, {"text":text, "user_id":user_id})
@@ -25,7 +22,7 @@ def get_profile_text(user_id):
 def delete_profile_text(user_id):
     """deletes the profile text of the given user"""
     try:
-        sql = "UPDATE PROFILE_TEXT SET visible = 0 WHERE user_id=:user_id"
+        sql = """DELETE from profile_text WHERE user_id=:user_id"""
         db.session.execute(sql, {"user_id":user_id})
         db.session.commit()
         return True
