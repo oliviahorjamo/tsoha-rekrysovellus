@@ -21,12 +21,13 @@
 {% if profile_text %}
 <div class = "content_box">
     <p> {{profile_text}} </p>
-    <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile">Muokkaa profiilitekstiäsi </a></p>
+    <p>Muokkaa profiilitekstiäsi tästä: <a href="/edit_profile_text">Muokkaa profiilitekstiäsi </a></p>
+    <p>Poista profiiliteksti tästä: <a href="/delete_profiletext">Poista profiiliteksti</a></p>
 </div>
 
 {% else %}
 <div class="content_box_without_content">
-    <p>Lisää profiiliteksti tästä: <a href="/edit_profile">Lisää profiiliteksti </a></p>
+    <p>Lisää profiiliteksti tästä: <a href="/edit_profile_text">Lisää profiiliteksti </a></p>
 </div>
 {% endif %}
 
@@ -42,8 +43,8 @@
     <p>Alkupäivämäärä: {{job.beginning}}</p>
     <p>Loppupäivämäärä: {{job.ended}}</p> 
     <br>
-    <p>Muokkaa työkokemusta <a href="/edit_job_experience/{{job.id}}">Muokkaa työkokemusta</a></p>
-    <p>Poista työkokemus <a href="/delete_job_experience/{{job.id}}">Poista työkokemus</a></p>
+    <p>Muokkaa työkokemusta tästä:<a href="/edit_job_experience/{{job.id}}">Muokkaa työkokemusta</a></p>
+    <p>Poista työkokemus tästä: <a href="/delete_job_experience/{{job.id}}">Poista työkokemus</a></p>
 </div>
 {% endfor %}
 
@@ -69,8 +70,8 @@
     <p>Aloituspäivämäärä: {{education.beginning}}</p>
     <p>Valmistumispäivämäärä: {{education.graduation}}</p> 
     <br>
-    <p>Muokkaa koulutusta <a href="/edit_education/{{education.id}}">Muokkaa koulutusta</a></p>
-    <p>Poista koulutus <a href="/delete_education/{{education.id}}">Poista koulutus</a></p>
+    <p>Muokkaa koulutusta tästä: <a href="/edit_education/{{education.id}}">Muokkaa koulutusta</a></p>
+    <p>Poista koulutus tästä:<a href="/delete_education/{{education.id}}">Poista koulutus</a></p>
     <br>
 </div>
 {% endfor %}

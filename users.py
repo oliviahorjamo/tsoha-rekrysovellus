@@ -3,27 +3,20 @@ from db import db
 from flask import abort, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-#user_role = 1 means that the user is an employer and the user information is
-#in the employers -table
-
 def login(name, password):
     sql = "SELECT password, id, role FROM users WHERE name=:name"
     result = db.session.execute(sql, {"name":name})
     user = result.fetchone()
-    print("user", user)
     if not user:
         return False
     if not check_password_hash(user[0], password):
         return False
-    print("user_role", user[2])
 
     session["user_role"] = user[2]
-
-    print("user_id", user[1])
     session["user_id"] = user[1]
-
     session["user_name"] = name
     session["csrf_token"] = os.urandom(16).hex()
+
     return True
 
 def logout():
@@ -37,10 +30,9 @@ def register(name, password, role):
         sql = "INSERT INTO users (name, password, role) VALUES (:name, :password, :role)"
         db.session.execute(sql, {"name":name, "password":hash_value, "role": role})
         db.session.commit()
-        print("commit onnistui")
+        return login(name, password)
     except:
         return False
-    return login(name, password)
 
 def user_id():
     return session.get("user_id", 0)
@@ -57,6 +49,6 @@ def check_csrf():
         abort(403)
 
 def get_name(id):
-    sql = """SELECT name FROM USERS where id =:id"""
+    sql = """SELECT name FROM users where id =:id"""
     return db.session.execute(sql, {"id":id}).fetchone()[0]
 

@@ -3,8 +3,9 @@ from users import user_id
 from users import user_role
 
 def get_my_jobs(user_id, application_status, job_status):
-    """returns all the jobs the user has created if an employer,
-    returns all the jobs the user has applied for with a given application status and a given job status,
+    """returns all the jobs the user has created and the chosen applicant if the job has been closed
+    if the user is an employer,
+    returns all the jobs with a given application status and a given job status,
     if the user is an employee"""
 
     if user_role() == 0:
